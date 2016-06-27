@@ -1,0 +1,12 @@
+<ion-list ng-hide="onlyIcon == 'false'">
+  <ion-item style="padding:7px;border: none;" class="item-text-wrap" ng-click="showItems($event)">
+    <span ng-if="noteImg == ''">{{text}}</span>
+    <span class="item-note">
+      {{noteText}}
+      <img class="fancylistimg {{noteImgClass}}" ng-if="onlyIcon && noteImg != ''" ng-src="{{noteImg}}" />
+    </span>
+  </ion-item>
+</ion-list>
+
+<img width="{{noteImgWidth}}" height="{{noteImgHeight}}" class="{{noteImgClass}}" ng-if="onlyIcon=='true' && icon != '' && noteImg != ''" ng-click="showItems($event)" ng-src="{{noteImg}}" />
+<i ng-if="onlyIcon && icon != ''" class="col button button-icon icon {{icon}}" ng-click="showItems($event)"></i>

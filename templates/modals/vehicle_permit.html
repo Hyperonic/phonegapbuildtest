@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="vehiclePermitModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'VEHICLE_PERMIT' | translate }}</h1>
+    <button ng-click="saveVehiclePermit()" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-header-bar class="bar-subheader bar-danger">
+    <p>{{ 'SELECT_VEHICLE_PERMIT' | translate }}</p>
+  </ion-header-bar>
+  <ion-content  class="custom-radio has-icon" scroll='false'>
+      <div class="row" id="vehiclepermitheaders" style="background-color:#fff;">
+        <h5 class="col center">{{ 'VEHICLE' | translate }}</h5>
+        <h5 class="col center">{{ 'PERMIT' | translate }}</h5>
+      </div>
+      <div class="row  zrtlfpd" style="position: absolute; top: 45px; bottom: 0px; left: 0px; right: 0px;">
+        <ion-scroll class="col center zrtlfpd" direction="y">
+        <ion-radio ng-repeat="vehicle in vehiclePermitData.vehicle" class="brdrt2" name="vehicle" ng-value="vehicle.make + ' - ' + vehicle.plate_number" ng-disabled="isExpired(vehicle)" ng-model="vehiclePermit.vehicle">{{vehicle.make}} (# {{vehicle.plate_number}})<p ng-if="isExpired(vehicle)"><i style="color:red">Expired</i></p></ion-radio>
+        </ion-scroll>
+        <ion-scroll class="col center zrtlfpd" direction="y">
+          <ion-radio ng-repeat="permit in vehiclePermitData.permit" class="brdlt2" name="permit" ng-value="permit.license_number" ng-model="vehiclePermit.permit" ng-disabled="isExpired(permit)">{{permit.license_number}}<p ng-if="isExpired(permit)"><i style="color:red">Expired</i></p></ion-radio>
+        </ion-scroll>
+      </div>
+      <div class="bottomBtn row text-center">
+          <div class="col">
+              <button on-tap="saveVehiclePermit()" class="register-btn button app-btn yellow">{{ 'SAVE' |translate}}</button>
+          </div>
+      </div>
+  </ion-content>
+</ion-modal-view>

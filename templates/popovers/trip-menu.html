@@ -1,0 +1,12 @@
+<ion-popover-view>
+	<ion-content>
+	  <ion-list>
+		  <ion-item ng-if="showSendMsg" ng-click="sendMessageModal()">
+		    {{ 'SEND_MESSAGE' | translate }}
+		  </ion-item>
+		  <ion-item ng-if="$root.allow_trip_cancel" ng-click="showCancelTripModal()">
+		    {{ 'CANCEL_TRIP' | translate }}
+		  </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-popover-view>

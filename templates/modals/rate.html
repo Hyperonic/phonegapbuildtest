@@ -1,0 +1,26 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <h1 class="title">{{ 'QUOTE_ACCEPTED' | translate }}</h1>
+    <div class="buttons">
+      <button class="button button-icon ion-more" ng-click="popoverPrice.show($event)"></button>
+    </div>
+  </ion-header-bar>
+  <!--<ion-header-bar class="bar-subheader bar-danger">
+    <div><p><span class="expirytxt">{{ 'QUOTE_EXPIRES_IN' | translate }}</span><timer interval="1000" countdown=orderCountDown ng-if="showCountDown" finish-callback="countDownEnded()">{{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer></p></div>
+  </ion-header-bar>-->
+    <div class="custom-radio has-icon countdown-subheader">
+        <countdown ng-if="showCountDown" countdown="$root.orderCountDown" callback="$root.countDownEnded()" max="$root.quoteExpiry"></countdown>
+    </div>
+  <ion-content class="custom-radio has-icon has-countdown">
+      <h4 class="quoteheading">{{ 'CHOOSE_PRICE' | translate }}</h4>
+      <accordion obj="accordion" class="quoteofferdetail">
+        <p><strong>{{item.label}}</strong>: {{item.text}}</p>
+      </accordion>
+      <ion-radio ng-repeat="rate in rates" ng-value="rate.value" ng-model="selectedRate.rate_id">{{ 'PRICE' | translate }}: {{rate.text}}</ion-radio>
+    <div class="row text-center">
+        <div class="col">
+            <button ng-disabled="rateNotSelected" on-tap="confirmRate(true)" class="register-btn button app-btn yellow">{{ 'CONFIRM' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

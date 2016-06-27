@@ -1,0 +1,301 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="removePlanModal()">{{ 'BACK' | translate }}</button>
+    </div>
+    <h1 class="title">{{ 'RATE_PLAN' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+        <form name="ratePlanForm" novalidate="">
+          <div class="list list-inset app-form market-form">
+              <label class="item item-input">
+                <input type="text"
+                       required
+                       placeholder="{{ 'NAME' | translate }}" 
+                       name="name"
+                       ng-model="rateplan.name"
+                       required>
+              </label>
+              <div ng-if="ratePlanForm.name.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.name.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.name.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('StartDay')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[0]" placeholder="{{ 'START_DATE' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showStartDayList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(0, day)}" ng-click="setTime('StartDay', 0, day)" ng-repeat="day in days" type="item-text-wrap">
+                          {{day}}
+                          <i ng-if="isSelectedTime(0, day)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('StartTime')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[1]" placeholder="{{ 'START_TIME' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showStartTimeList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(1, time)}" ng-click="setTime('StartTime', 1, time)" ng-repeat="time in times" type="item-text-wrap">
+                          {{time}}
+                          <i ng-if="isSelectedTime(1, time)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('EndDay')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[2]" placeholder="{{ 'END_DATE' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showEndDayList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(2, day)}" ng-click="setTime('EndDay', 2, day)" ng-repeat="day in days" type="item-text-wrap">
+                          {{day}}
+                          <i ng-if="isSelectedTime(2, day)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('EndTime')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[3]" placeholder="{{ 'END_TIME' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showEndTimeList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(3, time)}" ng-click="setTime('EndTime', 3, time)" ng-repeat="time in times" type="item-text-wrap">
+                          {{time}}
+                          <i ng-if="isSelectedTime(3, time)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'PER_MILE_PRICE' | translate }} ($)" 
+                     name="mile"
+                     ng-model="rateplan.settings[4]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.mile.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.mile.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.mile.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'PER_MIN_PRICE' | translate }} ($)" 
+                     name="min"
+                     ng-model="rateplan.settings[5]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.min.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.min.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.min.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'ADDITIONAL_SEATS' | translate }} ($)" 
+                     name="seats"
+                     ng-model="rateplan.settings[6]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.seats.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.seats.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.seats.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'DISCOUNT' | translate }} (%)" 
+                     name="discount"
+                     ng-model="rateplan.settings[7]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.discount.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.discount.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.discount.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'MIN_FARE' | translate }} ($)" 
+                     name="fare"
+                     ng-model="rateplan.settings[8]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.fare.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.fare.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.fare.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <div class="list list-inset cont-list" ng-click="showDayTime('RateServ')">
+                <div class="modal-list-items bar item-input-inset search-bar">
+                    <label class="item-input-wrapper">
+                        <input readonly class="google-place-search" type="search" ng-model="rateplan.settings[9]" placeholder="{{ 'SERV_TYPE' | translate }}">
+                    </label>
+                    <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                </div>
+                <ion-list ng-show="$parent.showRateServList" class="">
+                  <ion-item ng-class="{'selectedListItem':isSelectedService(service.text)}" ng-click="setRateService(service)" ng-repeat="service in rateservices" type="item-text-wrap">
+                      <img ng-src="{{service.icon}}" height="20px" />
+                      {{service.text}}
+                      <i ng-if="isSelectedService(service.text)" style="float: right" class="radio-icon ion-checkmark"></i>
+                  </ion-item>
+                </ion-list>
+              </div>
+              <div ng-if="ratePlanForm.services.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.services.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.services.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'CANCELLATION_FEE' | translate }} ($)" 
+                     name="cancel"
+                     ng-model="rateplan.settings[10]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.cancel.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.cancel.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.cancel.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('Pickup')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[11]" placeholder="{{ 'PICKUP_ZONE' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showPickupList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(11, pickup)}" ng-click="setTime('Pickup', 11, pickup)" ng-repeat="pickup in pickups" type="item-text-wrap">
+                          {{pickup}}
+                          <i ng-if="isSelectedTime(11, pickup)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <div class="list list-inset cont-list">
+                  <div ng-click="showDayTime('Dropoff')" class="modal-list-items bar item-input-inset search-bar">
+                      <label class="item-input-wrapper">
+                          <input readonly class="google-place-search" type="text" ng-model="rateplan.settings[12]" placeholder="{{ 'DROPOFF_ZONE' | translate }}">
+                      </label>
+                      <span class="ion-android-arrow-dropdown button button-clear ft25"></span>
+                  </div>
+                  <ion-list ng-show="$parent.showDropoffList">
+                      <ion-item ng-class="{'selectedListItem':isSelectedTime(12, pickup)}" ng-click="setTime('Dropoff', 12, pickup)" ng-repeat="pickup in pickups" type="item-text-wrap">
+                          {{pickup}}
+                          <i ng-if="isSelectedTime(12, pickup)" style="float: right" class="radio-icon ion-checkmark"></i>
+                      </ion-item>
+                  </ion-list>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     nks-only-number
+                     allow-negative="false"
+                     decimal-upto="2" 
+                     step="any"
+                     required
+                     placeholder="{{ 'FLAT_RATE_PRICE' | translate }} ($)" 
+                     name="flat"
+                     ng-model="rateplan.settings[13]"
+                     required>
+              </label>
+              <div ng-if="ratePlanForm.flat.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.flat.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.flat.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+                <input type="text"
+                       required
+                       placeholder="{{ 'COUPON_CODE' | translate }}" 
+                       name="coupon"
+                       ng-model="rateplan.settings[14]"
+                       required>
+              </label>
+              <div ng-if="ratePlanForm.coupon.$invalid" class="form-errors" 
+                   ng-show="ratePlanForm.coupon.$error && ratePlanForm.$submitted"
+                   ng-messages="ratePlanForm.coupon.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <div class="row item-checkbox">
+                <div class="col text-center">
+                    <label class="item item-checkbox">
+                      <div class="checkbox checkbox-input-hidden checkbox-circle">
+                      <input type="checkbox" name="active" ng-model="rateplan.settings[15]" ng-false-value="'Inactive'" ng-true-value="'Active'"><i class="checkbox-icon"></i></div>
+                      <div class="item-content">{{'ACTIVATE_PLAN' | translate}}</div>
+                    </label>
+                </div>
+            </div>
+
+            <div ng-if="!ratePlanForm.$valid" class="form-errors" 
+                 ng-show="!ratePlanForm.$valid && ratePlanForm.$submitted">
+                 <div class="form-error">
+                    {{ 'RATE_PLAN_EXISTS' | translate }}
+                  </div>
+            </div>
+          </div>
+          <div ng-if="centerSelected" class="row">
+              <div class="col">
+                  <button on-tap="savePlan(ratePlanForm)" class="mt10 button app-btn yellow">{{ 'SAVE' | translate }}</button>
+              </div>
+          </div>
+        </form>
+  </ion-content>
+</ion-modal-view >
+

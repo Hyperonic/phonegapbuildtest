@@ -1,0 +1,265 @@
+<ion-modal-view>
+<ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="driving.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+
+    <h1 class="title">{{ 'DRIVER_LICENSE' | translate }}</h1>
+
+    <button ng-click="saveDriverInfo(driverForm)" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-content class="signup-content text-center">
+    <form name="$parent.driverForm" novalidate="novalidate" autocomplete="off">
+          <!-- <div class="item signup-content" id="uploaddoc"><img ng-if="!license_upload" ng-src="{{driverData.license_upload}}" /><p ng-if="!license_upload" class="white">{{'ADD_DOCUMENT_PHOTO' | translate}}<br>({{ 'UPLOAD_CLEAR' | translate }})</p>
+            <ion-scroll ng-if="license_upload" direction="x" class="msgimages">
+                <img class="imageattached" ng-repeat="(type, src) in driverFormImages" ng-click="showLargeImage('driverFormImages', $index)" ng-src="{{src}}" />
+            </ion-scroll>
+          </div> -->
+
+          <div class="m10 mt30">
+            <div ng-click="picOption($event, 'license_upload')" class="button button-small button-stable">
+              {{'UPLOAD_PERMIT' | translate }}
+            </div>
+            <span ng-if="!license_upload && !driverForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!license_upload && driverForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan white">{{ license_upload }}</span>
+          </div>
+          <div class="m10">
+            <div ng-click="picOption($event, 'permit_city')" class="button button-small button-stable">
+              {{'PERMIT_CITY' | translate }}
+            </div>
+            <span ng-if="!permit_city && !driverForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!permit_city && driverForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan white">{{ permit_city }}</span>
+          </div>
+          <h3 class="m10 white">{{ 'EXTRA_INFO' | translate }}</h3>
+      <div class="list list-inset app-form login-form">
+        <!--<label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.dob.$invalid  && driverForm.$submitted}">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'DOB' | translate }}"
+                    name="dob"
+                    ng-model='driverData.dob'
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    renderbefore="{{defaultDob}}"
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="driverForm.dob.$invalid" class="form-errors" ng-show="driverForm.dob.$error && driverForm.$submitted" ng-messages="driverForm.dob.$error"
+          ng-messages-include="form-errors.html">
+          </div>-->
+
+          
+          <label class="item item-input">
+              <i class="fa"></i>
+            <input type="text"
+                   placeholder="{{ 'LICENSE' | translate }}" 
+                   name="license"
+                   ng-model="driverData.license"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="driverForm.license.$invalid" class="form-errors" 
+               ng-show="driverForm.license.$error && driverForm.$submitted"
+               ng-messages="driverForm.license.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <!--<label class="item item-input" ng-class="{ 'has-error-lr' : driverForm.issuingstate.$invalid  && driverForm.$submitted }">
+            <input class="readonly" readonly="true" placeholder="{{ 'LICENSE_ISSUING_STATE' | translate }}" required name="issuingstate" ng-model="driverData.license_issuing_state" ng-click="show($event)" type="text">
+          <fancy-select
+                        id="servicespanel"
+                        header-text="{{ 'LICENSE_ISSUING_STATE' | translate }}"
+                        callback="stateSelected(selVal)"
+                        done-callback="doneCB(selVal)"
+                        allow-empty='true'
+                        value="stateval.multiple"
+                        text="state_text_single"
+                        items="states"
+                        only-icon=''
+                        multi-select="true"
+                        show="show"          
+                        >
+          </fancy-select>-->
+          <!-- <ion-autocomplete 
+                  name="issuingstate"
+                  ng-model="driverData.license_issuing_state"
+                  required
+                  placeholder="{{ 'LICENSE_ISSUING_STATE' | translate }}"
+                  placeholderfield="{{ 'LICENSE_ISSUING_STATE' | translate }}"
+                  cancel-label="{{ 'CANCEL' | translate }}"
+                  select-items-label="{{ 'SELECT_STATE' | translate }}"
+                  item-value-key="id"
+                  item-view-value-key="text"
+                  items-method="getStates(query)"/>
+          </label>
+          <div ng-if="driverForm.issuingstate.$invalid" class="form-errors" ng-show="driverForm.issuingstate.$error && driverForm.$submitted" ng-messages="driverForm.issuingstate.$error"
+          ng-messages-include="form-errors.html">
+          </div>
+
+          <label class="item item-input" ng-class="{ 'has-error-lr' : driverForm.permitcities.$invalid  && driverForm.$submitted }">
+              <ion-autocomplete 
+                                name="permitcities"
+                                ng-model="driverData.city"
+                                required
+                                placeholder="{{ 'PERMIT_CITIES' | translate }}"
+                                placeholderfield="{{ 'PERMIT_CITIES' | translate }}"
+                                cancel-label="{{ 'DONE' | translate }}"
+                                selected-items-label="{{ 'SELECTED_CITIES' | translate }}"
+                                select-items-label="{{ 'SELECT_A_CITY' | translate }}"
+                                item-value-key="description"
+                                item-view-value-key="description"
+                                items-method="getTestItems(query)"
+                                multiple-select="true"
+                                items-clicked-method="itemsClicked(callback)"/>
+          </label>
+          <div ng-if="driverForm.permitcities.$invalid" class="form-errors" ng-show="driverForm.permitcities.$error && driverForm.$submitted" ng-messages="driverForm.permitcities.$error"
+          ng-messages-include="form-errors.html">
+          </div>
+
+          <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.issue_date.$invalid  && driverForm.$submitted}">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'ISSUING_DATE' | translate }}"
+                    name="issue_date"
+                    ng-model="driverData.issue_date"
+                    required
+                    callback="saveDateTime(selDate, field)"
+                    renderbefore=""
+                    is-icon='false'>
+            </date-picker>
+          </label>
+
+          <div ng-if="driverForm.issue_date.$invalid" class="form-errors" ng-show="driverForm.issue_date.$error && driverForm.$submitted" ng-messages="driverForm.issue_date.$error"
+          ng-messages-include="form-errors.html">
+          </div> -->
+
+          <label class="item item-input">
+              <i class="fa"></i>
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'EXPIRY_DATE' | translate }}"
+                    name="expiry"
+                    ng-model="driverData.expiry"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    callback="saveDateTime(selDate, field)"
+                    style="width:100%"
+                    is-icon='false'>
+            </date-picker>
+          </label>
+
+          <div ng-if="driverForm.expiry.$invalid" class="form-errors" ng-show="driverForm.expiry.$error && driverForm.$submitted" ng-messages="driverForm.expiry.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.title_expiry.$invalid  && driverForm.$submitted }">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'TITLE_EXPIRY' | translate }}"
+                    name="title_expiry"
+                    ng-model="driverData.title_expiry"
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="driverForm.title_expiry.$invalid" class="form-errors" 
+               ng-show="driverForm.title_expiry.$error && driverForm.$submitted"
+               ng-messages="driverForm.title_expiry.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.insurance.$invalid  && driverForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'INSURANCE_POLICY' | translate }}" 
+                   name="insurance"
+                   ng-model="driverData.insurance"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="driverForm.insurance.$invalid" class="form-errors" 
+               ng-show="driverForm.insurance.$error && driverForm.$submitted"
+               ng-messages="driverForm.insurance.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <!--<div class="button-bar">
+            <a class="button" id="permit_upload" ng-click="picOption($event, 'permit_upload')">{{ 'PERMIT_UPLOAD' | translate }}</a>
+            <a class="button" id="license_upload" ng-click="picOption($event, 'license_upload')">{{ 'LICENSE_UPLOAD' | translate }}</a>
+          </div>-->
+
+          <!-- <label ng-click="picOption($event, 'permit_upload')" 
+                class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.permit_upload.$invalid  && driverForm.$submitted }">
+            <input type="text"
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'PERMIT_UPLOAD' | translate }}" 
+                   name="permit_upload"
+                   ng-model="driverData.permit">
+              <i ng-if="driverData.permit_upload" class="icon button-icon ion-checkmark"></i>
+          </label>
+          <div ng-if="driverForm.permit_upload.$invalid" class="form-errors" 
+               ng-show="driverForm.permit_upload.$error && driverForm.$submitted"
+               ng-messages="driverForm.permit_upload.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <!-- <label ng-click="picOption($event, 'license_upload')" 
+                 class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.license_upload.$invalid  && driverForm.$submitted }">
+            <input type="text"
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'LICENSE_UPLOAD' | translate }}" 
+                   name="license_upload"
+                   ng-model="driverData.licensee">
+            <i ng-if="driverData.license_upload" class="icon button-icon ion-checkmark"></i>
+          </label>
+          <div ng-if="driverForm.permit_upload.$invalid" class="form-errors" 
+               ng-show="driverForm.license_upload.$error && driverForm.$submitted"
+               ng-messages="driverForm.license_upload.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <label ng-hide="true" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.license_upload.$invalid  && driverForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'LICENSE_UPLOAD' | translate }}" 
+                   name="license_upload"
+                   ng-model="driverData.license_upload"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+          <input ng-hide="true" type="file" id="file_license_upload" ng-model="licenseimage" name="file" base-sixty-four-input onloadend="licenseFileLoaded" maxsize="500" accept="image/jpeg">
+
+          <label ng-hide="true" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : driverForm.permit_city.$invalid  && driverForm.$submitted }">
+            <input type="text"
+                   name="permit_city"
+                   ng-model="driverData.permit_city"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+          <input ng-hide="true" type="file" id="file_permit_city" ng-model="licenseimage" name="file" base-sixty-four-input onloadend="permitCityFileLoaded" maxsize="500" accept="image/jpeg">
+
+        </div>
+    </form>
+    <div class="row">
+        <div class="col">
+            <button on-tap="saveDriverInfo(driverForm)" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+        </div>
+    </div>
+  </ion-content>
+  <!-- <button on-swipe-right="saveDriverInfo(driverForm)" style="margin-top: 70px;" class="tp quoteMapBtn hide-on-keyboard-open button button-block icon-right ion-chevron-right button-balanced">{{ 'SAVE' | translate }}</button> -->
+</ion-modal-view >
+

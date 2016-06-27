@@ -1,0 +1,100 @@
+<ion-modal-view ng-controller="TripDetailCtrl">
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-if="$root.detail.isCustomer" ng-click="$root.tripModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title ft19"><span ng-bind-html="triptitle"></span></h1>
+    <div class="buttons">
+      <button class="button button-icon ion-more" ng-click="$root.popoverMenu.show($event)"></button>
+    </div>
+  </ion-header-bar>
+  <div ng-if="tripStarted" ng-class="(detail.isDriver) ? 'tripsubheaderHt' : 'customertripsubheaderHt'" class="nopadding bar bar-subheader bar-subcustom bar-stable">
+      <div ng-hide="showDriveInfo" ng-if="detail.isDriver" style="height: 74px;" class="bar-positve">
+      </div>
+      <div style="text-align: left" class="bar-positve row">
+        <div class="tripsubheaderdiv" ng-if="!detail.isDriver">
+          <div class="nameimg">
+            <img ng-src="{{driveInfo.pic}}" ng-click="showLargImage()">
+            <div class="namephone">
+              <div class="driver_profile name">{{driveInfo.first_name}}</div>
+              <div ng-style="{opacity : ((driveInfo.license == 'undefined') && '0') || '1'}" class="licensepermit">
+                <span><i class="button-icon icon ion-card nopadding"></i><span class="driver_profile">{{driveInfo.license}}</span></span>
+                <span><i class="button-icon icon ion-model-s nopadding"></i><span class="driver_profile">{{driveInfo.vehicle}}</span></span>
+              </div>
+              <div style="clear:right"></div>
+              <p class="driver_profile phone"><i class="button-icon icon ion-iphone nopadding"></i><span>{{driveInfo.cellPhone}}</span></p>
+            </div>
+          </div>
+        <!--<div class="row tripdetailfooter">
+              {{tripDistance}}/{{tripTime}} {{triptext | translate}}
+          </div>-->
+        </div>
+        <div class="tripsubheaderdiv" style="margin-bottom: 5px; margin-top: 5px;width:100%" ng-if="detail.isDriver">
+          <button class="showInstr button button-balanced button-small" ng-click="$root.showInstructions = !$root.showInstructions"><span ng-if="!$root.showInstructions">Show Instr.</span><span ng-if="$root.showInstructions">Hide Instr.</span></button>
+          <p>{{profile.description}}</p>
+          <!-- <div class="">
+                <p><span class="boldFont">{{'ETA' | translate}}:</span> {{tripDistance}}/{{tripTime}} {{triptext | translate}}</p>
+                  <p class=""><span class="boldFont">{{'PICKUP' | translate}}:</span> {{detail.pickup}}</p>
+                <div ng-if="detail.status=='load'">
+                    <p class=""><span class="boldFont">{{'DROPOFF' | translate}}:</span> {{detail.dropoff}}</p>
+                    <p class=""><span class="boldFont">{{'PRICE' | translate}}:</span> {{detail.price}}</p>
+                    <p class=""><span class="boldFont">{{'PAYMENT_METHOD' | translate}}:</span> {{detail.paymentMethod}}</p>
+              </div>
+          </div> -->
+        </div>
+      </div>
+  </div>
+  <ion-content ng-class="{'bt80': detail.status=='accept', 'bt140': detail.status=='load', 'tripcontentdriver': detail.isDriver, 'tripcontentdriverafterload': detail.isDriver && detail.status=='load', 'tripcontentcustomer': !detail.isDriver && tripStarted}">
+      <div ng-if="detail.isDriver" ng-style="{height: $root.showInstructions ? '' : '0'}" >
+        <ion-list>
+            <ion-item  ng-repeat="steps in mapInstructions" ng-show="$root.showInstructions" class="item-accordion item-text-wrap">
+              <span class="step">{{$index+1}}.</span> <span class="directionspan" ng-bind-html="steps.instructions"></span>
+            </ion-item>
+        </ion-list>
+      </div>
+      <div ng-show="!$root.showInstructions" scroll="false" id="tripmap" padding="true" data-tap-disabled="true"></div>
+      <div ng-show="!$root.showInstructions" ng-if="detail.isDriver && showFooter" id="tripmapBtn" class="text-center mapBtn">
+          <div class="col">
+              <button ng-disable="disableArrive" on-swipe-right="tripStatus(arrivedloadunload)"
+              class="register-btn button app-btn yellow icon-right ion-chevron-right pointed">
+                <div ng-if="detail.status != 'unload'" class="fllft numberCircle">{{tripTime}}</div>
+                <span>{{arrivedloadunload | translate}}</span>
+                <div ng-if="detail.status != 'unload'" class="flrt numberCircle">{{tripDistance | ftToMiles}}</div>
+              </button>
+          </div>
+      </div>
+  </ion-content>
+  <!-- <button ng-show="!$root.showInstructions" style="top: 85%;" ng-disable="disableArrive" ng-if="detail.isDriver && showFooter" on-swipe-right="tripStatus(arrivedloadunload)" class="quoteMapBtn button button-block icon-right ion-chevron-right button-balanced">{{arrivedloadunload | translate}}</button> -->
+  <!-- <div ng-show="!$root.showInstructions" ng-if="detail.isDriver && showFooter" class="text-center mapBtn">
+            <div class="col">
+                <button ng-disable="disableArrive" on-swipe-right="tripStatus(arrivedloadunload)"
+                class="register-btn button app-btn yellow icon-right ion-chevron-right">{{arrivedloadunload | translate}}
+                </button>
+            </div>
+        </div> -->
+  <!--<div ng-if="detail.isDriver && showFooter" class="nopadding detailsubfooter bar bar-subfooter bar-stable">
+    <div class="row tripdetailfooter">
+        {{tripDistance}}/{{tripTime}} {{triptext | translate}}
+    </div>
+  </div>
+  <ion-footer-bar ng-disable="disableArrive" ng-if="detail.isDriver && showFooter" class="nopadding tripsubfooter">
+    <button on-tap="tripStatus(arrivedloadunload)" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">{{arrivedloadunload | translate}}</button>
+  </ion-footer-bar>-->
+  <ion-footer-bar ng-if="tripStarted" id="tripfooter" ng-class="{'ht80': detail.status=='accept' || detail.status=='arrived', 'ht140': detail.status=='load'}"  ng-disable="disableArrive" class="bar-custom">
+      <div class="row" ng-if="!detail.isDriver && detail.status !='load'">
+        <p class="col"><span class="boldFont">{{'ETA' | translate}}:</span> {{tripDistance | ftToMiles}}/{{tripTime}} {{triptext | translate}}</p>
+      </div>
+      <div class="row">
+        <p class="col"><span class="boldFont">{{'PICKUP' | translate}}:</span> {{detail.pickup}}</p>
+      </div>
+      <div ng-if="detail.status=='load'" class="">
+        <div class="row">
+          <p class="col"><span class="boldFont">{{'DROPOFF' | translate}}:</span> {{detail.dropoff}}</p>
+        </div>
+        <div class="row">
+          <p class="col"><span class="boldFont">{{'PRICE' | translate}}:</span> {{detail.price}}</p>
+        </div>
+        <div class="row">
+          <p class="col"><span class="boldFont">{{'PAYMENT_METHOD' | translate}}:</span> {{detail.paymentMethod}}</p>
+        </div>
+      </div>
+  </ion-footer-bar>
+</ion-modal-view>

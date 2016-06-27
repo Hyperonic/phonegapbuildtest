@@ -1,0 +1,158 @@
+<ion-view title="{{title}}" class="driver-content">
+    <!--<ion-nav-buttons side="left">
+    <button ng-if="showquote" class="button button-icon icon ion-ios-minus-outline" ng-click="data.showDelete = !data.showDelete; data.showReorder = false">
+    </button>
+    </ion-nav-buttons>-->
+<ion-nav-buttons side="right">
+    <div class="buttons">
+        <button ng-show="(employees|filter:filterMe|filter:filterMode| filter:filterTags).length > 4" class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()"></button>
+        <button class="button button-icon ion-more" ng-click="popoverDispatcher.show($event)"></button>
+    </div>
+    </ion-nav-buttons>
+    <div ng-if="showquote && (employees|filter:filterMe|filter:filterMode).length != 0 || allow_advance_reservation != 0" class="dispatchersubheader quotemapheader nopadding bar bar-subheader bar-positve">
+      <div class="row nopadding">
+        <label class="ng-hide col button button-icon icon icon-pickup">
+            <ion-google-place id="icon-pickup" ng-click="locationTapped('pickup')" style="display:none" placeholderpickup="{{ 'ENTER_PICKUP' | translate }}" placeholderdropoff="{{ 'ENTER_DROP' | translate }}" ng-change="changed()" required ng-model="quoteForm" callback="changed(selVal)" />
+        </label>
+        <label ng-click="dropoffClicked()" class="ng-hide col button button-icon icon icon-dropoff">
+        </label>
+        <date-picker
+                ng-if="allow_advance_reservation != 0 && allow_remote_reservation != 0"
+                class="col button-icon icon"
+                heading="{{ 'PICKUP_DATE' | translate }}"
+                renderafter
+                reservation="{{allow_advance_reservation}}"
+                remote-reservation="{{allow_remote_reservation}}"
+                callback="saveDateTime(selDate)"
+                tz="timezone"
+                is-icon='true'>
+        </date-picker>
+        <!-- <i class="col button button-icon icon ion-person-add" ng-click="openSeatsModal()"></i> -->
+        <seats ng-if="$root.allow_multiple_passengers || $root.allow_fare_split" class="col button-icon icon" people="quoteForm.people" alertsplitfare="splitFare" splitfare="quoteForm.splitFare"></seats>
+        <fancy-select
+                  class="col button-icon icon mapIcons"
+                  icon="ion-model-s"
+                  id="serviceIcon"
+                  header-text="{{ 'SERVICE' | translate }}"
+                  heading="{{ 'SERVICE_TRIP' | translate }}"
+                  empty-text="{{ 'NO_SERVICE' | translate }}"
+                  allow-empty='true'
+                  items="services"
+                  items-detail="servicesDetail"
+                  item-type="quoteForm.service"
+                  arr-param="selectService"
+                  callback="serviceSelected(selVal)"
+                  only-icon='false'>
+        </fancy-select>
+        <i class="col button button-icon icon ion-information-circled" ng-click="openInstructions()"></i>
+        <!-- <ion-toggle ion-toggle-custom-text class="col modetoggler button button-icon icon" ng-true-text="'{{ 'BID_ON' | translate }}'" ng-false-text="'{{ 'BID_OFF' | translate }}'" ng-true-value="'quote'" ng-false-value="'offer'" ng-init="quoteForm.qmode = 'offer'" ng-model="quoteForm.qmode">
+                </ion-toggle> -->
+      </div>
+  </div>
+  <button ng-if="messaging && !((showquote && (employees|filter:filterMe|filter:filterMode).length == 0) || (!showquote && (employees|filter:filterMe| filter:filterFunc).length == 0))" on-tap="selectAllNone('msg')" class="selectall button button-block button-balanced">{{ selectallnonetext | translate }}</button>
+  <button ng-if="!messaging && showquote && (employees|filter:filterMe|filter:filterMode).length > 0" on-tap="selectAllNone('quote')" class="selectall button button-block button-balanced">{{ selectquoteallnonetext | translate }}</button>
+    <ion-content ng-class="{'has-subheader' : showquote,'quotemapcontentnodriver' : !quoteForm.pickup}" class="quotemapcontent dispatchercontent">
+        <ion-list ng-if="showquote" can-swipe="true" show-delete="data.showDelete" show-reorder="data.showReorder">
+            <ion-item item="employee" class="dispatcherList app-toggle" ng-if="employee.dispatcher < 1" ng-repeat="employee in (sortedlist = employees | filter:filterMe | filter:filterMode | filter: filterTags | orderBy:sortFunc)" type="item-text-wrap" ng-click="employeeDetailPage($event, employee.id+1)">
+                    
+                    
+                    <label ng-if="messaging" class="checkbox dispatcherChkbox">
+                       <input ng-model="employee.isCheckedForMsg" type="checkbox">
+                     </label>
+                    <label ng-if="!messaging" class="checkbox dispatcherChkbox">
+                       <input ng-disabled="employee.intrip == true &&  employee.quote_id != ''" ng-model="employee.isChecked" type="checkbox">
+                     </label>
+                     <img ng-src="{{employee.pic || defaultPic}}" class="dispatcherChkbox dispatcherImg" ng-click="showLargImage(employee.pic)"/>
+                    <ion-toggle
+                                class="dispatcherToggle"
+                                ng-model="employee.active"
+                                ng-checked="employee.active == 1"
+                                detect-gestures
+                                ng-disabled="true"
+                                data-booked="{{employee.active}}"
+                                data-id="{{employee.id}}"
+                                toggle-class="dispatchertoggler">
+                        <div class="dispatcherContainer">
+                          <div class="dispatcherDetail">
+                              <!--<img ng-src="{{employee.pic }}" ng-click="showLargImage()" width="40" height="40"/>-->
+                              <h3>{{employee.firstName}} {{employee.lastName}} <span class="dispatcherlistrating"><span>({{employee.driverRating}}</span><i class="nopadding button-icon icon ion-star energized"></i>)</span></h3>
+                              <p>{{employee.title=="No Description" ? "": employee.title}}</p>
+                              <p ng-if="employee.intrip">{{'TRIP_IN_PROGRESS' | translate}}</p>
+                          </div>
+                        </div>
+                    </ion-toggle>
+
+                    <!--<div class="details inactiveDispatcher" ng-if="employee.active == 0">
+                        <img ng-src="{{employee.pic }}" width="60" height="60"/>
+                        <h3>{{employee.firstName}} {{employee.lastName}}</h3>
+                        <p>{{employee.title}}</p>
+                    </div>-->
+                <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(employee)"></ion-delete-button>
+                <ion-option-button ng-if="isAdmin" class="button-assertive" ng-click="edit(employee)">{{'EDIT' | translate}}</ion-option-button>
+                <ion-reorder-button class="ion-navicon" on-reorder="moveItem(employee, $fromIndex, $toIndex, sortedlist)"></ion-reorder-button>
+            </ion-item>
+        </ion-list>
+        <ion-list ng-if="!showquote">
+            <ion-item ng-if="employee.dispatcher < 1" ng-repeat="employee in employees | filter:filterFunc | filter:filterMe" type="item-text-wrap" href="#/app/employee/{{employee.id+1}}">
+                <div class="details">
+                    <img style="border-radius: 20px !important;" ng-src="{{employee.pic }}" width="40" height="40"/>
+                    <h3 ng-class="{'tp12': employee.title=='No Description'}">{{employee.firstName}} {{employee.lastName}}</h3>
+                    <p>{{employee.title=="No Description" ? "": employee.title}}</p>
+                </div>
+            </ion-item>
+        </ion-list>
+        <!-- <div class="emptylist yellow" ng-style="showquote ? {'top': '50%'} : {'top': '55%'}" ng-show="!$root.showingLoader && ((showquote && (employees|filter:filterMe|filter:filterMode).length == 0) || (!showquote && (employees|filter:filterMe| filter:filterFunc).length == 0))">
+            <h2>{{ 'NO_DRIVER' | translate }}</h2>
+        </div> -->
+        <!-- <button ng-if="showquote && (employees|filter:filterMe).length != 0" on-tap="quoteButtonTapped($event)" ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="quoteMapBtn">
+                <div ng-if="!messaging">
+                  <span ng-if="quoteBtnText != 'SET_A_B'">{{ quoteBtnText | translate }}</span>
+                  <p ng-if="quoteBtnText == 'SET_A_B'">
+                  <img src="img/markerA.png" />
+                  {{ 'SET_ROUTE' | translate }}
+                  <img src="img/markerB.png" /></p>
+                </div>
+                <span ng-if="messaging">{{ 'ENTER_MESSAGE' | translate }}</span>
+        </button> -->
+    </ion-content>
+        <div class="text-center dispatcherbtn">
+            <div ng-if="$root.allow_reservation" class="col">
+                <button ng-if="!messaging && quoteBtnText == 'SELECT_SERVICE'" on-tap="editPickup('pickup')" class="register-btn button app-btn yellow confirmbtn mr5 twobtns">
+                  <span>{{ 'BACK' | translate }}</span>
+                </button>
+                <button ng-if="showBtn && showquote" on-tap="quoteButtonTapped($event)" ng-class="{'twobtns': !messaging && (quoteBtnText == 'SELECT_SERVICE' || quoteBtnText == 'REVIEW'), 'mr5': quoteBtnText == 'REVIEW'}"
+                class="register-btn button app-btn yellow fullwidth">
+                <div ng-if="!messaging">
+                  <div ng-show="furthestTime <= nearestTime && quoteBtnText != 'REVIEW'" ng-if="totalDrivers > 0" class="fllft numberCircle">{{nearestTime}}<br>{{ 'MINUTES' | translate}}</div>
+                  <span ng-if="quoteBtnText != 'SET_A_B'">{{ quoteBtnText | translate }}</span>
+                  <span ng-if="quoteBtnText == 'SET_A_B'">{{ 'SET_ROUTE' | translate }}</span>
+                  <div ng-show="totalDrivers > 0 && quoteBtnText != 'REVIEW'" class="flrt numberCircle">{{totalDrivers}}<br><i class="button-icon icon ion-model-s quotedrivericon"></i></div>
+                </div>
+                <span ng-if="messaging">{{ 'ENTER_MESSAGE' | translate }}</span>
+                </button>
+                <button ng-if="!messaging && quoteBtnText == 'REVIEW'" on-tap="confirm()" ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="register-btn button app-btn yellow confirmbtn twobtns">
+                  <div ng-show="furthestTime <= nearestTime" ng-if="totalDrivers > 0" class="fllft numberCircle">{{nearestTime}}<br>{{ 'MINUTES' | translate}}</div>
+                  <span>{{ 'CONFIRM' | translate }}</span>
+                  <div ng-show="totalDrivers > 0" class="flrt numberCircle">{{totalDrivers}}<br><i class="button-icon icon ion-model-s quotedrivericon"></i></div>
+                </button>
+            </div>
+            <div ng-if="!$root.allow_reservation" class="col">
+                <button ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="register-btn button app-btn yellow"><span>{{ 'RESER_DISABLED' | translate }}</span>
+                </button>
+            </div>
+        </div>
+      <!--<ion-footer-bar ng-if="showquote && (employees|filter:filterMe).length != 0" class="nopadding">
+        <!--<button ng-if="!messaging" on-tap="sendQuote()" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">{{ 'QUOTE' | translate }}</button>-->
+        <!--<button ng-if="!messaging" on-tap="quoteButtonTapped($event)" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">
+                <span ng-if="quoteBtnText != 'SET_A_B'">{{ quoteBtnText | translate }}</span>
+                <p ng-if="quoteBtnText == 'SET_A_B'">
+                <img src="img/markerA.png" />
+                <span style="position:relative; top:-5px;">{{ 'SET_ROUTE' | translate }}</span>
+                <img src="img/markerB.png" /></p>
+        </button>
+        <button ng-if="messaging" on-tap="enterMessage()" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">{{ 'ENTER_MESSAGE' | translate }}</button>
+    </ion-footer-bar>-->
+</ion-view>

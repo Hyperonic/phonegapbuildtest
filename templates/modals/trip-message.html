@@ -1,0 +1,36 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="removeMessageModal()">{{ 'BACK' | translate }}</button>
+    </div>
+    <h1 class="title">{{ 'MESSAGE' | translate }}</h1>
+  </ion-header-bar>
+  <ion-header-bar class="bar-subheader bar-danger">
+    <p>{{ 'SELECT_MESSAGE' | translate }}</p>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+    <div class="list">
+        <form name="$parent.tripMsgForm" id="trip-msg" ng-submit="sendMessage(tripMsgForm)">
+            <ion-radio ng-repeat="msg in tripmsgs" class="" ng-init="tripmsg.default=tripmsgs[0].val" ng-model="tripmsg.default" ng-value="msg.val">{{msg.text | translate}}</ion-radio>
+            <!--<ion-radio ng-model="tripmsg.default" ng-value="'Reason 1'">Message 1</ion-radio>
+            <ion-radio ng-model="tripmsg.default" ng-value="'Reason 2'">Message 2</ion-radio>
+            <ion-radio ng-model="tripmsg.default" ng-value="'Other'">{{ 'OTHER' | translate }}</ion-radio>-->
+            <label ng-hide="otherMsgSelected" class="custom-text item" 
+                     ng-class="{ 'has-error-lr' : tripMsgForm.othermsg.$invalid  && tripMsgForm.$submitted }">
+                <textarea rows="4" placeholder="{{ 'ENTER_MESSAGE' | translate }}" required name="othermsg" ng-model="tripmsg.other" msd-elastic></textarea>
+              </label>
+              <div ng-if="tripMsgForm.othermsg.$invalid" class="form-errors" 
+                   ng-show="tripMsgForm.othermsg.$error && tripMsgForm.$submitted &&!otherMsgSelected"
+                   ng-messages="tripMsgForm.othermsg.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+        </form>
+    </div>
+    <div class="row">
+          <div class="col text-center">
+              <button on-tap="sendMessage(tripMsgForm)" class="register-btn button app-btn yellow">{{ 'SEND' | translate }}</button>
+          </div>
+      </div>
+  </ion-content>
+</ion-modal-view >
+

@@ -1,0 +1,23 @@
+<ion-view title="{{ 'MY_PROFILE' | translate }}" hide-back-button="true">
+    <ion-content>
+        <ion-list class="nopadding">
+            <ion-item ui-sref="app.changepwd">
+              <i class="icon ion-key nav-icon"></i>
+              {{ 'CHANGE_PASSWORD' | translate }}
+            </ion-item>
+            <ion-item ui-sref="app.vehicle">
+              <i class="icon ion-model-s nav-icon"></i>
+              {{ 'MY_VEHICLE' | translate }}
+            </ion-item>
+            <ion-item ui-sref="app.driving">
+              <i class="icon ion-information-circled nav-icon"></i>
+              {{ 'MY_DRIVING_INFO' | translate }}
+            </ion-item>
+            <ion-item ui-sref="app.uploadpic">
+              <i class="icon ion-camera nav-icon"></i>
+              {{ 'UPLOAD_PIC' | translate }}
+            </ion-item>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

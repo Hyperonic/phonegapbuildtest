@@ -1,0 +1,127 @@
+<ion-view title="{{ app_name | translate }}" hide-back-button="true">
+    <ion-nav-buttons side="right">
+        <button side="right" ng-if="$root.tripModal" class="button button-icon ion-map" ng-click="$root.tripModal.show()"></button>
+    </ion-nav-buttons>
+    <div ng-hide="emptyQueue"
+         class="quotemapheader nopadding bar bar-subheader bar-positve">
+        <!--<div class="row nopadding" style="font-weight:bold;min-height: 30px;" id="rangeMiles">
+            <p class="ft15 mauto bar-positve"><span ng-if="nearestTime">{{'NEAREST_FURTHEST' | translate }}: <span ng-show="furthestTime > nearestTime">{{nearestTime}}-{{furthestTime}}</span><span ng-show="furthestTime <= nearestTime">{{nearestTime}}</span> {{'MINUTES' | translate }}.</span> {{ 'TOTAL_DRIVERS' | translate }}: {{totalDrivers}}
+            </p>
+
+        </div>-->
+        <div class="row nopadding">
+            <!--<i class="col button button-icon icon ion-clock" ng-click="openDateTimePicker()"></i>-->
+            <date-picker
+                    ng-if="allow_advance_reservation != 0 && allow_remote_reservation != 0"
+                    class="col button-icon icon"
+                    heading="{{ 'PICKUP_DATE' | translate }}"
+                    renderafter
+                    reservation="{{allow_advance_reservation}}"
+                    remote-reservation="{{allow_remote_reservation}}"
+                    callback="saveDateTime(selDate)"
+                    tz="timezone"
+                    is-icon='true'>
+            </date-picker>
+            <!-- <i class="col button button-icon icon ion-person-add" ng-click="openSeatsModal()"></i> -->
+            <seats ng-if="$root.allow_multiple_passengers || $root.allow_fare_split" class="col button-icon icon" people="quoteForm.people" alertsplitfare="splitFare" splitfare="quoteForm.splitFare"></seats>
+            <i ng-if="$root.allow_coupon" class="col button button-icon icon ion-pricetag"
+               ng-click="popoverDiscount.show($event)"></i>
+            <i class="col button button-icon icon ion-model-s" ng-click="openService()"></i>
+            <fancy-select
+                      class="col button-icon icon mapIcons"
+                      icon="ion-model-s"
+                      style="display:none"
+                      id="serviceIcon"
+                      header-text="{{ 'SERVICE' | translate }}"
+                      heading="{{ 'SERVICE_TRIP' | translate }}"
+                      empty-text="{{ 'NO_SERVICE' | translate }}"
+                      allow-empty='true'
+                      items="services"
+                      items-detail="servicesDetail"
+                      item-type="quoteForm.service"
+                      arr-param="selectService"
+                      callback="serviceSelected(selVal)"
+                      only-icon='false'>
+            </fancy-select>
+            <i class="col button button-icon icon ion-information-circled"
+               ng-click="openInstructions()"></i>
+               <!-- <ion-toggle ion-toggle-custom-text class="col modetoggler button button-icon icon" ng-true-text="'{{ 'BID_ON' | translate }}'" ng-false-text="'{{ 'BID_OFF' | translate }}'" ng-true-value="'quote'" ng-false-value="'offer'" ng-init="quoteForm.qmode = 'offer'" ng-model="quoteForm.qmode">
+                </ion-toggle> -->
+        </div>
+        <label style="display:none" class="col button button-icon icon">
+            <ion-google-place id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+                              callback="changed(selVal)" required="required"
+                              pickuppromotions="promotions" dropoffpromotions="pointsinterest" ng-model="quoteForm"/>
+        </label>
+        <!--<label style="display:none" class="col button button-icon icon">
+            <ion-google-place id="icon-dropoff" label-cancel="{{ 'CANCEL' | translate }}"
+                              placeholder="{{ 'ENTER_DROP' | translate }}"
+                              ng-change="dropoffChanged()" required="required"
+                              promotions="pointsinterest" ng-model="quoteForm.dropoff"/>
+        </label>-->
+        <!--<div class="row">
+          <label class="col button button-icon icon icon-pickup">
+              <ion-google-place label-cancel="{{ 'CANCEL' | translate }}" ng-click="locationTapped('pickup')" style="display:none" placeholder="{{ 'ENTER_PICKUP' | translate }}" ng-change="changed()" required="required" promotions="promotions" ng-model="quoteForm.pickup" />
+          </label>
+          <label class="col button button-icon icon icon-dropoff">
+              <ion-google-place label-cancel="{{ 'CANCEL' | translate }}" ng-click="locationTapped('dropoff')" style="display:none" placeholder="{{ 'ENTER_DROP' | translate }}" ng-change="changed()" required="required" promotions="pointsinterest" ng-model="quoteForm.dropoff" />
+          </label>
+          <i class="col button button-icon icon ion-clock" ng-click="openDateTimePicker()"></i>
+          <i class="col button button-icon icon ion-person-add" ng-click="openSeatsModal()"></i>
+        </div>-->
+    </div>
+    <ion-content scroll="false" class="quotemaplogged quotemapcontent">
+        <div scroll="false" id="quotemap" padding="true" data-tap-disabled="true"></div>
+        <div ng-show="pickupSelected && !emptyQueue" id="estDiv">{{ 'DISTANCE' | translate }}:
+            {{estDist}} {{ 'MILES' | translate}} {{ 'EST_TIME' | translate }}: {{estTime}}
+        </div>
+        <!-- <button ng-if="driversInspected" ng-init="driversInspected=false" on-tap="quoteButtonTapped($event)" ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="quoteMapBtn"><span ng-if="quoteBtnText != 'SET_A_B'">{{ quoteBtnText | translate }}</span>
+                <p ng-if="quoteBtnText == 'SET_A_B'">
+                <img src="img/markerA.png" />
+                {{ 'SET_ROUTE' | translate }}
+                <img src="img/markerB.png" /></p>
+        </button> -->
+        <div class="text-center mapBtn" ng-style="quoteBtnText == 'SET_A_B' && {'bottom': '51%'}" ng-class="{'nodriver': quoteBtnText == 'NO_DRIVER', 'confirm': quoteBtnText == 'REVIEW'}">
+            <div ng-if="$root.allow_reservation" class="col">
+                <button ng-if="driversInspected" ng-init="driversInspected=false" on-tap="quoteButtonTapped($event)" ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn, 'pointed' : quoteBtnText == 'SET_A_B'}"
+                class="register-btn button app-btn yellow"><span ng-if="quoteBtnText != 'SET_A_B'">{{ quoteBtnText | translate }}</span>
+                  <!-- <img src="img/markerA.png" /> -->
+                  <div ng-show="totalDrivers > 0" ng-if="quoteBtnText != 'NO_DRIVER' && quoteBtnText != 'REVIEW'" class="fllft numberCircle">{{nearestTime}}<br>{{ 'MINUTES' | translate}}</div>
+                  <span ng-if="quoteBtnText == 'SET_A_B'">{{ 'SET_ROUTE' | translate }}</span>
+                  <!-- <img src="img/markerB.png" /> -->
+                  <div ng-show="totalDrivers > 0" ng-if="quoteBtnText != 'NO_DRIVER' && quoteBtnText != 'REVIEW'" class="flrt numberCircle">{{totalDrivers}}<br><i class="button-icon icon ion-model-s quotedrivericon"></i></div>
+                </button>
+                <button ng-if="quoteBtnText == 'SELECT_SERVICE'" on-tap="editPickup('pickup')" class="register-btn button app-btn yellow confirmbtn">
+                  <span>{{ 'BACK' | translate }}</span>
+                </button>
+                <button ng-if="quoteBtnText == 'REVIEW' && driversInspected" on-tap="confirm()" ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="register-btn button app-btn yellow confirmbtn">
+                  <div ng-show="totalDrivers > 0" class="fllft numberCircle">{{nearestTime}}<br>{{ 'MINUTES' | translate}}</div>
+                  <span>{{ 'CONFIRM' | translate }}</span>
+                  <div ng-show="totalDrivers > 0" class="flrt numberCircle">{{totalDrivers}}<br><i class="button-icon icon ion-model-s quotedrivericon"></i></div>
+                </button>
+            </div>
+            <div ng-if="!$root.allow_reservation" class="col">
+                <button ng-class="{'quotemapbtnnotlogged' : !$root.loggedIn}"
+                class="register-btn button app-btn yellow"><span>{{ 'RESER_DISABLED' | translate }}</span>
+                </button>
+            </div>
+        </div>
+
+
+        <button side="right" class="centermap button button-icon ion-navigate" ng-click="centerMap()"></button>
+
+    </ion-content>
+    <!--<div ng-hide="emptyQueue" class="nopadding ht90 bar bar-subfooter bar-stable">
+       <div class="row" style="font-weight:bold;min-height: 30px;" id="rangeMiles"><p class="mauto bar-positve">{{ 'NEAREST_FURTHEST' | translate }}: {{furthestTime}} - {{nearestTime}} {{ 'MINUTES' | translate }} {{furthestMiles}} - {{nearestMiles}} {{ 'MILES' | translate }}...{{ 'TOTAL_DRIVERS' | translate }}: {{totalDrivers}}</p></div>
+       <div class="row" style="padding:0">
+         <i ng-repeat="service in services" ng-click="serviceSelected(service.text)" ng-class="{'serviceinactive' : quoteForm.service != service.text, 'taxicar': service.class=='taxicar', 'blackcar': service.class=='blackcar', 'suv': service.class=='suv', 'taxivan': service.class=='taxivan', 'sharedride': service.class=='sharedride'}" class="col services button button-icon icon ion-model-s"></i>
+       </div>
+     </div>-->
+
+    
+</ion-view>
+

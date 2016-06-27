@@ -1,0 +1,12 @@
+<ion-popover-view>
+	<ion-content>
+	  <ion-list>
+		  <ion-item ng-if="$root.allow_edit_trip_detail && isDispatcherAdmin" ng-click="edit()">
+		    {{ 'EDIT' | translate }}
+		  </ion-item>
+		  <ion-item ng-click="delete()">
+		    {{ 'DELETE' | translate }}
+		  </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-popover-view>

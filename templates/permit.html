@@ -1,0 +1,194 @@
+<ion-view title="{{ 'CITY_PERMITS' | translate }}">
+  <ion-nav-buttons side="right">
+      <button side="right" class="button button-icon ion-checkmark" ng-click="saveDriverInfo(permitForm)"></button>
+  </ion-nav-buttons>
+  <ion-content class="signup-content text-center has-footer">
+      <!-- <div class="item signup-content" id="uploaddoc"><img ng-if="!permit_upload" ng-src="{{driverData.permit_upload}}" /><p ng-if="!permit_upload" class="white">{{'ADD_DOCUMENT_PHOTO' | translate}}<br>({{ 'UPLOAD_CLEAR' | translate }})</p>
+      <ion-scroll ng-if="permit_upload" direction="x" class="msgimages">
+            <img class="imageattached" ng-repeat="(type, src) in permitFormImages" ng-click="showLargeImage('permitFormImages', $index)" ng-src="{{src}}" />
+        </ion-scroll>
+      </div> -->
+
+      <div class="m10 mt30">
+        <div ng-click="picOption($event, 'permit_upload')" class="button button-small button-stable">
+          {{'CHOOSE_FILE' | translate }}
+        </div>
+        <span ng-if="!permit_upload && !permitForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+        <span class="form-error" ng-if="!permit_upload && permitForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+        <span class="choosefilespan white">{{ permit_upload }}</span>
+      </div>
+      <h3 class="m10 white">{{ 'EXTRA_INFO' | translate }}</h3>
+    <form name="$parent.permitForm" novalidate="novalidate" autocomplete="off">
+      <div class="list list-inset app-form login-form">
+
+            <label class="item item-input">
+              <i class="fa"></i>
+              <ion-autocomplete 
+                                name="permitcities"
+                                ng-model="driverData.city"
+                                required
+                                placeholder="{{ 'PERMIT_CITIES' | translate }}"
+                                placeholderfield="{{ 'PERMIT_CITIES' | translate }}"
+                                cancel-label="{{ 'DONE' | translate }}"
+                                selected-items-label="{{ 'SELECTED_CITIES' | translate }}"
+                                select-items-label="{{ 'SELECT_A_CITY' | translate }}"
+                                item-value-key="description"
+                                item-view-value-key="description"
+                                items-method="getTestItems(query)"
+                                multiple-select="true"
+                                items-clicked-method="itemsClicked(callback)"/>
+          </label>
+          <div ng-if="permitForm.permitcities.$invalid" class="form-errors" ng-show="permitForm.permitcities.$error && permitForm.$submitted" ng-messages="permitForm.permitcities.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          
+          <label ng-hide="true" class="item item-input">
+            <input type="text"
+                   placeholder="{{ 'PERMIT_UPLOAD' | translate }}" 
+                   name="permit_upload"
+                   ng-model="driverData.permit_upload"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+      </div>
+    </form>
+    <div class="row">
+        <div class="col">
+            <button on-tap="saveDriverInfo(permitForm)" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+        </div>
+    </div>
+      <!-- <div class="list list-inset card">
+          <div class="item" id="uploaddoc"><img ng-if="!permit_upload" ng-src="{{driverData.permit_upload}}" /><p ng-if="!permit_upload">{{'ADD_DOCUMENT_PHOTO' | translate}}<br>({{ 'UPLOAD_CLEAR' | translate }})</p>
+          <ion-scroll ng-if="permit_upload" direction="x" class="msgimages">
+                <img class="imageattached" ng-repeat="(type, src) in permitFormImages" ng-click="showLargeImage('permitFormImages', $index)" ng-src="{{src}}" />
+            </ion-scroll>
+          </div>
+
+          <div class="m10">
+            <div ng-click="picOption($event, 'permit_upload')" class="button button-small button-stable">
+              {{'CHOOSE_FILE' | translate }}
+            </div>
+            <span ng-if="!permit_upload && !permitForm.$submitted" class="choosefilespan">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!permit_upload && permitForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan">{{ permit_upload }}</span>
+          </div>
+          <h3 class="m10">{{ 'EXTRA_INFO' | translate }}</h3>
+
+          <label class="item item-input" ng-class="{ 'has-error-lr' : permitForm.permitcities.$invalid  && permitForm.$submitted }">
+              <ion-autocomplete 
+                                name="permitcities"
+                                ng-model="driverData.city"
+                                required
+                                placeholder="{{ 'PERMIT_CITIES' | translate }}"
+                                placeholderfield="{{ 'PERMIT_CITIES' | translate }}"
+                                cancel-label="{{ 'DONE' | translate }}"
+                                selected-items-label="{{ 'SELECTED_CITIES' | translate }}"
+                                select-items-label="{{ 'SELECT_A_CITY' | translate }}"
+                                item-value-key="description"
+                                item-view-value-key="description"
+                                items-method="getTestItems(query)"
+                                multiple-select="true"
+                                items-clicked-method="itemsClicked(callback)"/>
+          </label>
+          <div ng-if="permitForm.permitcities.$invalid" class="form-errors" ng-show="permitForm.permitcities.$error && permitForm.$submitted" ng-messages="permitForm.permitcities.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div> -->
+
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : permitForm.expiry.$invalid  && permitForm.$submitted}">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'EXPIRY_DATE' | translate }}"
+                    name="expiry"
+                    ng-model="driverData.expiry"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    callback="saveDateTime(selDate, field)"
+                    is-icon='false'>
+            </date-picker>
+          </label>
+
+          <div ng-if="permitForm.expiry.$invalid" class="form-errors" ng-show="permitForm.expiry.$error && permitForm.$submitted" ng-messages="permitForm.expiry.$error"
+          ng-messages-include="form-errors.html">
+          </div>
+ -->
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : permitForm.title_expiry.$invalid  && permitForm.$submitted }">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'TITLE_EXPIRY' | translate }}"
+                    name="title_expiry"
+                    ng-model="driverData.title_expiry"
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="permitForm.title_expiry.$invalid" class="form-errors" 
+               ng-show="permitForm.title_expiry.$error && permitForm.$submitted"
+               ng-messages="permitForm.title_expiry.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div> -->
+
+          <!--<div class="button-bar">
+            <a class="button" id="permit_upload" ng-click="picOption($event, 'permit_upload')">{{ 'PERMIT_UPLOAD' | translate }}</a>
+            <a class="button" id="license_upload" ng-click="picOption($event, 'license_upload')">{{ 'LICENSE_UPLOAD' | translate }}</a>
+          </div>-->
+
+          <!-- <label ng-click="picOption($event, 'permit_upload')" 
+                class="item item-input" 
+                 ng-class="{ 'has-error-lr' : permitForm.permit_upload.$invalid  && permitForm.$submitted }">
+            <input type="text"
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'PERMIT_UPLOAD' | translate }}" 
+                   name="permit_upload"
+                   ng-model="driverData.permit">
+              <i ng-if="driverData.permit_upload" class="icon button-icon ion-checkmark"></i>
+          </label>
+          <div ng-if="permitForm.permit_upload.$invalid" class="form-errors" 
+               ng-show="permitForm.permit_upload.$error && permitForm.$submitted"
+               ng-messages="permitForm.permit_upload.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <!-- <label ng-click="picOption($event, 'license_upload')" 
+                 class="item item-input" 
+                 ng-class="{ 'has-error-lr' : permitForm.license_upload.$invalid  && permitForm.$submitted }">
+            <input type="text"
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'LICENSE_UPLOAD' | translate }}" 
+                   name="license_upload"
+                   ng-model="driverData.licensee">
+            <i ng-if="driverData.license_upload" class="icon button-icon ion-checkmark"></i>
+          </label>
+          <div ng-if="permitForm.permit_upload.$invalid" class="form-errors" 
+               ng-show="permitForm.license_upload.$error && permitForm.$submitted"
+               ng-messages="permitForm.license_upload.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+
+          <input ng-hide="true" type="file" id="file_permit_upload" ng-model="permitimage" name="file" base-sixty-four-input onloadend="permitFileLoaded" maxsize="500" accept="image/jpeg">
+
+          <label ng-hide="true" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : permitForm.permit_upload.$invalid  && permitForm.$submitted }">
+            <input type="text"
+                   name="permit_upload"
+                   ng-model="driverData.permit_upload"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+        <!-- </div>
+    </form> -->
+  </ion-content>
+  <!-- <button on-swipe-right="savePermitInfo(permitForm)" style="margin-top: 70px;" class="tp quoteMapBtn hide-on-keyboard-open button button-block icon-right ion-chevron-right button-balanced">{{ 'SAVE' | translate }}</button> -->
+</ion-modal-view >
+

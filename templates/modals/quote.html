@@ -1,0 +1,47 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive bar-custom">
+        <h1 class="title ft19">{{'QUOTE' | translate}}@{{quoteDetail.group_name}}</h1>
+
+        <div class="buttons">
+            <button class="button button-icon ion-more"
+                    ng-click="popoverQuote.show($event)"></button>
+        </div>
+    </ion-header-bar>
+    <!-- <ion-header-bar class="bar-subheader bar-danger">
+      <div><p>
+        <span class="expirytxt">{{ 'QUOTE_EXPIRES_IN' | translate }}</span>
+        <timer interval="1000" ng-if="showQuoteCountDown" countdown=quoteCountDown
+                       finish-callback="quoteCountDownEnded()">{{mminutes}} minute{{minutesS}},
+                    {{sseconds}} second{{secondsS}}
+                </timer>
+            </p>
+        </div> 
+    </ion-header-bar>-->
+    <div class="custom-radio has-icon countdown-subheader">
+        <countdown ng-if="showQuoteCountDown" countdown="$root.quoteCountDown" callback="$root.quoteCountDownEnded()" max="$root.driverQuoteExpiry"></countdown>
+    </div>
+    <ion-content class="custom-radio has-icon has-countdown">
+        <h4 class="quoteheading">{{ 'NEW_QUOTES_ARRIVED' | translate }}</h4>
+        <!--<div style="margin:10px" class="item-content item-text-wrap">
+          <p><strong>{{ 'SERVICE' | translate }}</strong>: {{quoteDetail.selectService}}
+          |<strong>{{ 'SEATS' | translate }}</strong>: {{quoteDetail.selectPeople}}
+          |<strong>{{ 'DATE_TIME' | translate }}</strong>: {{quoteDetail.selectDate}} {{quoteDetail.selectTime}}
+          |<strong>{{ 'ROUTE' | translate }}</strong>: {{quoteDetail.route_distance}} {{ 'MILES' | translate }}
+          |<strong>{{ 'PICKUP_DISTANCE' | translate }}</strong>: {{quoteDetail.distance_pickup}} {{ 'MILES' | translate }}</p>
+      </div>-->
+        <accordion obj="accordion" class="quoteofferdetail">
+            <p><strong>{{item.label}}</strong>: {{item.text}}</p>
+        </accordion>
+        <!--<div ng-if="quotes.length > 0" class="button-bar">
+              <a class="button" ng-click="checkAllQuote(true)">Check All</a>
+            </div>-->
+            <ion-checkbox ng-class="{'chked-item': quote.enabled}" ng-repeat="quote in quotes" class="item-checkbox-right quotechkbox"
+                          ng-model="quote.enabled">{{ 'PRICE' | translate }}: {{quote.text}}
+            </ion-checkbox>
+        <div class="row text-center">
+            <div class="col">
+                <button on-tap="confirmQuote(true)" ng-disabled="!isChecked()" class="register-btn button app-btn yellow">{{ 'CONFIRM' |translate}}</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

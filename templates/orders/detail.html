@@ -1,0 +1,83 @@
+<ion-view title="{{ 'ORDER_DETAIL' | translate }}">
+	<ion-nav-buttons side="right">
+	    <div ng-if="editable" class="buttons">
+	      <button class="button button-icon ion-more" ng-click="popoverMenu.show($event)"></button>
+	    </div>
+	</ion-nav-buttons>
+	<ion-content id="orderdetail" class="custom-radio has-icon has-footer">
+		<div class="edit-show-hide" ng-show="editForm">
+			<form name="orderForm" novalidate="novalidate">
+				  	<label class="ordersearch">
+			            <label class="item item-input">
+					    <b><img src="img/markerA.png"></b>
+					    <input ng-model="order.pickup" type="text">
+				            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+		                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+		                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+		                              ng-change="changed()" callback="changed(selVal)" required="required" ng-model="order"/>
+			        </label>
+				  </label>
+				    <label class="ordersearch">
+			           <label class="item item-input">
+					    <b><img src="img/markerB.png"></b>
+					    <input ng-model="order.dropoff" type="text">
+			            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+	                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+	                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+	                              ng-change="changed()" callback="changed(selVal)" required="required" ng-model="order"/>
+			        </label>
+				  </label>
+
+				  <label class="item item-input">
+				    <i class="ordericons icon ion-clock placeholder-icon"></i>
+				    <date-picker
+		                    ng-model='order.time'
+		                    heading="{{ 'PICKUP_DATE' | translate }}"
+		                    renderafter
+		                    callback="saveDateTime(selDate)"
+		                    is-icon='false'>
+		            </date-picker>
+				  </label>
+				  <label class="item item-input">
+				    <i class="ordericons icon ion-person-add placeholder-icon"></i>
+				  	<input readonly ng-model="order.selectPeople" ng-click="openSeats()" type="text">
+				    <seats is-icon='false' ng-hide="true" people="order.selectPeople" alertsplitfare="splitFare" splitfare="order.splitFare"></seats>
+				  </label>
+
+					<label class="item item-input">
+					    <i style="padding-right: 38px !important;" class="ordericons icon placeholder-icon"></i>
+					    <input ng-model="order.selectService" ng-click="showService($event)" type="text">
+			            <fancy-select
+			                      class="col button-icon icon mapIcons"
+			                      id="servicespanel"
+			                      header-text="{{ 'SERVICE' | translate }}"
+			                      heading="{{ 'SERVICE_TRIP' | translate }}"
+			                      empty-text="{{ 'NO_SERVICE' | translate }}"
+			                      allow-empty='false'
+			                      items="services"
+			                      item-type="order.selectService"
+			                      arr-param="selectService"
+			                      callback="serviceSelected(selVal)"
+			                      only-icon='true'
+			                      note-img="{{serviceImg}}"
+			                      note-img-width="22"
+			                      note-img-height="30">
+			            </fancy-select>
+		            </label>
+
+	      				<button ng-hide="true" id="primary" ng-click="save(orderForm);"></button>
+			</form>
+		      <div class="row text-center cancel-btn offerBtnDecline">
+		          <div class="col">
+		              <button on-tap="cancelEdit()" class="register-btn button app-btn">{{ 'CANCEL' |translate}}</button>
+		          </div>
+		      </div>
+		      <div class="row text-center editorder-btn offerBtnAccept">
+		          <div class="col">
+		              <button on-tap="save()" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+		          </div>
+		      </div>
+		</div>  
+	    <div scroll="false" id="ordermap" padding="true" data-tap-disabled="true"></div>  
+	</ion-content>
+</ion-view>  

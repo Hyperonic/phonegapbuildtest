@@ -1,0 +1,49 @@
+<ion-modal-view>
+<ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="personalpic.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+
+    <h1 class="title">{{ 'UPLOAD_PIC' | translate }}</h1>
+
+    <button ng-click="savePersonalPic(personalForm)" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-content  class="signup-content text-center" has-header="true" padding="true">
+          <!-- <div class="item signup-content" id="uploaddoc"><img ng-click="showLargeImage('driverFormImages', 0)" ng-click="showLargeImage()" ng-class="{'imageattached':personal_upload}" ng-src="{{picData}}" /><p class="white" ng-if="!personal_upload">{{'ADD_YOUR_PHOTO' | translate}}<br>({{ 'UPLOAD_CLEAR' | translate }})</p></div> -->
+
+          <div class="m10 mt30">
+            <div ng-click="picOption($event, 'personal_upload')" class="button button-small button-stable">
+              {{'CHOOSE_FILE' | translate }}
+            </div>
+            <span ng-if="!personal_upload && !personalForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!personal_upload && personalForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan white">{{ personal_upload }}</span>
+
+            <input ng-hide="true" type="file" id="file_personal_upload" ng-model="myimage" name="file" base-sixty-four-input onloadend="loaded" maxsize="500" accept="image/jpeg">
+
+            
+          </div>
+      <!-- <div ng-if="isMobile" class="button-bar">
+        <a class="button" ng-click="takePicture()">{{ 'FROM_CAMERA' | translate }}</a>
+        <a class="button" ng-click="selectPicture()">{{ 'FROM_GALLERY' | translate }}</a>
+      </div>
+      <button ng-if="!isMobile" onclick="document.getElementById('pic').click()" class="button button-block button-stable">{{ 'ATTACH_PIC' | translate }}</button>
+      <img ng-show="ftLoad" id="myimage" ng-src="{{picData}}" />
+      <div class="no-employee" ng-show="nopic">
+            <h2>{{ 'NO_PICTURE' | translate }}</h2>
+        </div> -->
+    <form name="$parent.personalForm" novalidate="novalidate" autocomplete="off">
+        <label ng-hide="true" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : personalForm.personal_pic.$invalid  && personalForm.$submitted }">
+            <input type="text"
+                   name="personal_pic"
+                   ng-model="personal_pic"
+                   required>
+          </label>
+      </form>
+      <div class="row">
+        <div class="col">
+            <button on-tap="savePersonalPic(personalForm)" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+        </div>
+    </div>
+  </ion-content>
+  <!-- <button on-swipe-right="savePersonalPic(personalForm)" style="margin-top: 70px" class="tp quoteMapBtn button button-block icon-right ion-chevron-right button-balanced">{{'SAVE' | translate}}</button> -->
+</ion-modal-view>

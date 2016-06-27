@@ -1,0 +1,126 @@
+<ion-view title="{{ dispatcherformTitle | translate }}">
+  <ion-nav-buttons side="right">
+      <button class="button button-icon ion-checkmark" ng-click="saveEmployee(dispatcherForm)"></button>
+  </ion-nav-buttons>
+  <ion-content class="custom-radio has-icon has-footer">
+      <form name="$parent.dispatcherForm" novalidate="" id="dispatcher-form" autocomplete="off">
+          <div class="list list-inset app-form login-form">
+                
+                  <label class="item item-input">
+                    <input placeholder="{{ 'FIRST_NAME' | translate }}" required name="fname" type="text" size="20" ng-model="empl.firstName" />
+                  </label>
+                <div ng-if="dispatcherForm.fname.$invalid" class="form-errors" ng-show="dispatcherForm.fname.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.fname.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+
+                
+                  <label class="item item-input">
+                    <input placeholder="{{ 'LAST_NAME' | translate }}" name="lname" type="text" size="20" ng-model="empl.lastName" />
+                  </label>
+                  <div ng-if="dispatcherForm.lname.$invalid" class="form-errors" ng-show="dispatcherForm.lname.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.lname.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+                
+
+                
+                  <label class="item item-input">
+                    <input placeholder="{{ 'CELL_PHONE' | translate }}" required name="phone" type="text" size="20" ng-model="empl.cellPhone" />
+                  </label>
+                  <div ng-if="dispatcherForm.phone.$invalid" class="form-errors" ng-show="dispatcherForm.phone.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.phone.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+                
+
+                
+                  <label class="item item-input">
+                    <input placeholder="{{ 'EMAIL' | translate }}" required name="email" type="email" size="20" ng-model="empl.email" ui-validate="{itemexists : 'alreadyExists($value)' }" ng-change="emailChanged()" />
+                  </label>
+                  <div ng-if="dispatcherForm.email.$invalid" class="form-errors" ng-show="dispatcherForm.email.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.email.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+
+               <label ng-if="formType=='add' && !isOwner" class="item item-input" 
+                       ng-class="{ 'has-error-lr' : dispatcherForm.password.$invalid  && dispatcherForm.$submitted}">
+                  <input type="password"
+                         placeholder="{{ 'PASSWORD' | translate }}" 
+                         name="password"
+                         ng-model="empl.password" 
+                         ng-minlength="5"
+                         required>
+                </label>
+
+                <div ng-if="dispatcherForm.password.$invalid" class="form-errors" ng-show="dispatcherForm.password.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.password.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+
+                <label ng-if="formType=='add' && !isOwner" class="item item-input">
+                  <input required placeholder="{{ 'CONFIRM_PASSWORD' | translate }}" ng-model="empl.confirmPassword" type="password" name="confirmpwd" ng-minlength="5" compare-to="empl.password" >
+                </label>
+                <div ng-if="dispatcherForm.confirmpwd.$invalid" ng-messages="dispatcherForm.confirmpwd.$error" 
+                  class="form-errors" ng-show="dispatcherForm.confirmpwd.$error && dispatcherForm.$submitted">
+                  <div ng-messages-include="form-errors.html"></div>
+                  </div> 
+
+                <label class="item item-input">
+            <input placeholder="{{ 'ITEM_TYPE' | translate }}" required name="type" ng-model="empl.item" ng-click="showService($event)" type="text">
+                <fancy-select
+                              header-text="{{ 'ITEM_TYPE' | translate }}"
+                              done-callback="doneCB(selVal)"
+                              allow-empty='true'
+                              items="items"
+                              item="empl.item"
+                              items-arr="empl.items"
+                              item-type="empl.itemType"
+                              arr-param="itemType"
+                              only-icon='false'
+                              multi-select="true"
+                              callback="showServiceField()"              
+                              >
+                </fancy-select>
+                </label>
+                <div ng-if="dispatcherForm.type.$invalid" class="form-errors" ng-show="dispatcherForm.type.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.type.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+
+                <label class="item item-input" ng-if="showServiceField()">
+            <input placeholder="{{ 'SERVICE_TYPE' | translate }}" required name="service" ng-model="empl.service" ng-click="showService($event)" type="text">
+                <fancy-select
+                              header-text="{{ 'SERVICE' | translate }}"
+                              allow-empty='true'
+                              items="services"
+                              item="empl.service"
+                              items-arr="empl.services"
+                              item-type="empl.serviceType"
+                              arr-param="itemType"
+                              only-icon='false'
+                              multi-select="true"
+                              select-callback="noService(selVal)"          
+                              >
+                </fancy-select>
+                </label>
+                <div ng-if="dispatcherForm.service.$invalid && showServiceField()" class="form-errors" ng-show="dispatcherForm.service.$error && dispatcherForm.$submitted" ng-messages="dispatcherForm.service.$error">
+                  <div ng-messages-include="form-errors.html"></div>
+                </div>
+                
+                <!-- <div class="form-row">
+                      <ion-checkbox class="item-checkbox-right" ng-model="empl.active" ng-true-value="1" ng-false-value="0">{{'ACTIVE' | translate}}</ion-checkbox>
+                </div> -->
+            </div>
+                <div class="row item-checkbox">
+                  <div class="col text-center">
+                      <label class="item item-checkbox">
+                        <div class="checkbox checkbox-input-hidden checkbox-circle">
+                        <input type="checkbox" name="active" ng-model="empl.active" ng-true-value="1" ng-false-value="0"><i class="checkbox-icon"></i></div>
+                        <div class="item-content">{{'ACTIVE' | translate}}</div>
+                      </label>
+                  </div>
+              </div>
+        </form>
+        <div class="row text-center">
+            <div class="col">
+                <button on-tap="saveEmployee(dispatcherForm)" class="register-btn button app-btn yellow">{{ 'SAVE' |translate}}</button>
+            </div>
+        </div>
+  </ion-content>
+</ion-view>
+

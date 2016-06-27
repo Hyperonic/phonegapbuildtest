@@ -1,0 +1,43 @@
+<ion-modal-view class="setinvite-content">
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <!--<button ng-click="seatsModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>-->
+
+    <h1 class="title">{{ 'SEATS' | translate }}</h1>
+
+    <button ng-disabled="disableSeatsCheck" ng-click="saveSeats()" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-header-bar ng-if="$root.allow_multiple_passengers" class="bar-subheader bar-danger">
+      <p>{{ 'SEATS_TRIP' | translate }}</p>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon has-subheader">
+    <div class="list">
+          <!-- <ion-radio ng-repeat="seat in seats" ng-value="seat.id" ng-model="seatsModel.setFunc" ng-model-options="{ getterSetter: true }">{{ seat.text }}
+          </ion-radio> -->
+          <label ng-class="{'checkedFancyItem': seat.checked==true}" ng-if="$root.allow_multiple_passengers" ng-repeat="seat in seats" class="item item-radio">
+            <input type="radio" name="group" ng-value="seat.id" ng-model="seatsModel.setFunc" ng-model-options="{ getterSetter: true }">
+            <div class="item-content">
+              {{ seat.text }}
+            </div>
+            <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <!-- <ion-checkbox ng-click="shareFareTapped()" ng-model="shareFare.isChecked" ng-checked="shareFare.isChecked">{{ 'SHARE_FARE' | translate }}</ion-checkbox> -->
+          <div ng-show="shareFare.isChecked">
+              <split-fare ng-repeat="splitEmail in splitEmails" ng-model="splitEmail.email" total="splitEmails.length" index="$index" add="addFare()" valid="setValidEmail($index, isValid)" remove="removeFare(splitEmail)"></split-fare>
+          </div>
+        <div ng-if="$root.allow_fare_split" style="margin:0" class="row item-checkbox">
+              <div class="col text-center">
+                  <label class="item item-checkbox">
+                    <div class="checkbox checkbox-input-hidden checkbox-circle">
+                    <input type="checkbox" ng-click="shareFareTapped()" ng-model="shareFare.isChecked" ng-checked="shareFare.isChecked"><i class="checkbox-icon"></i></div>
+                    <div class="item-content">{{'SHARE_FARE' | translate}}</div>
+                  </label>
+              </div>
+          </div>
+    </div>
+    <div class="row text-center">
+        <div class="col">
+            <button on-tap="saveSeats()" class="register-btn button app-btn yellow">{{ 'SET' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,21 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="seatsModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+
+    <h1 class="title">{{ 'SEATS' | translate }}</h1>
+
+    <button ng-disabled="disableSeatsCheck" ng-click="saveSeats()" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+      <div class="bar-danger">
+       {{ 'SEATS_TRIP' | translate }}
+      </div>
+    <ion-radio ng-repeat="seat in seats" ng-value="seat.id" class="list-custom" ng-model="seatsModel.setFunc" ng-model-options="{ getterSetter: true }">{{seat.text}}</ion-radio>
+    <ion-checkbox ng-click="shareFareTapped()" ng-model="shareFare.isChecked" ng-checked="shareFare.isChecked">{{ 'SHARE_FARE' | translate }}</ion-checkbox>
+    <div ng-show="shareFare.isChecked">
+        <ion-list ng-repeat="splitEmail in splitEmails">
+        <split-fare ng-model="splitEmail.email" total="splitEmails.length" index="$index" add="addFare()" valid="setValidEmail($index, isValid)" remove="removeFare(splitEmail)"></split-fare>
+        </ion-list>
+    </div>
+  </ion-content>
+</ion-modal-view>

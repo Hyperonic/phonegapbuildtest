@@ -1,0 +1,44 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="removeCancelModal()">{{ 'BACK' | translate }}</button>
+    </div>
+    <h1 class="title">{{ cancelTitle | translate }}</h1>
+  </ion-header-bar>
+  <ion-header-bar class="bar-subheader bar-danger">
+    <p>{{ 'SELECT_REASON' | translate }}</p>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+    <div class="list">
+        <form name="$parent.cancelForm" id="trip-form">
+            <!--<div>
+                <ion-select label="Select Reason" label-field="reason" provider="reasons"  ng-model="cancel.reason"/>
+            </div>-->
+            <!--<label>
+            <select class="ion-input-select" ng-model="reason" 
+              ng-options="reason as reason.reason for reason in reasons">
+              <option value="">Select Reason</option>
+            </select>
+            </label>-->
+            <ion-radio ng-repeat="reason in cancelreasons" ng-init="cancel.default=cancelreasons[0].val" ng-model="cancel.default" ng-value="reason.val">{{reason.text | translate}}</ion-radio>
+            <!--<ion-radio ng-model="cancel.reason" ng-value="'Reason 2'">Reason 2</ion-radio>
+            <ion-radio ng-model="cancel.reason" ng-value="'Other'">Other</ion-radio>-->
+            <label ng-hide="otherSelected" class="custom-text item" 
+                     ng-class="{ 'has-error-lr' : cancelForm.othermsg.$invalid  && cancelForm.$submitted }">
+                <textarea rows="4" placeholder="{{ 'ENTER_REASON' | translate }}" required name="othermsg" ng-model="cancel.other" msd-elastic></textarea>
+              </label>
+              <div ng-if="cancelForm.othermsg.$invalid" class="form-errors" 
+                   ng-show="cancelForm.othermsg.$error && cancelForm.$submitted &&!otherSelected"
+                   ng-messages="cancelForm.othermsg.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+        </form>
+    </div>
+    <div class="row text-center">
+        <div class="col">
+            <button on-tap="cancelTap(cancelForm)" class="register-btn button app-btn yellow ng-binding disable-user-behavior">{{ 'CANCEL' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view >
+

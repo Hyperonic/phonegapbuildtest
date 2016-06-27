@@ -1,0 +1,89 @@
+<ion-view title="{{ 'SUBMIT_FORMS' | translate }}" class="submitform-content">
+    <ion-nav-buttons side="right">
+        <button side="right" class="button button-icon ion-checkmark" ng-click="save(mainForm)"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-footer">
+            <!--<ion-slide-box slide-tabs-scrollable="false" show-pager="false" ion-slide-tabs>
+              <ion-slide ion-slide-tab-label="{{'VEHICLE' | translate }}" ng-if="showVehicle">
+                   <div ng-include src="'templates/vehicle.html'"></div>
+              </ion-slide>
+              <ion-slide ion-slide-tab-label="{{'PERMIT' | translate }}" ng-if="showPermit">
+                   <div ng-include src="'templates/driving.html'"></div>
+              </ion-slide>
+              <ion-slide ion-slide-tab-label="{{'PICTURE' | translate }}" ng-if="!$root.picData" >
+                   <div ng-include src="'templates/upload-picture.html'"></div>
+              </ion-slide>
+            </ion-slide-box>-->
+      <form name="$parent.mainForm" class="mt30" novalidate="novalidate" autocomplete="off">
+        <div class="list list-inset card forms-form submit-form forms-list-check">
+          <label data-tap-disabled="true" ng-if="showPermit" ng-click="openForm('driving')" 
+                 class="item item-input item-stacked-label">
+            <i ng-if="!license_filled && !mainForm.$submitted" class="fa fa-chevron-right"></i>
+            <i ng-if="license_filled" class="fa fa-check"></i>
+            <i ng-if="!license_filled && mainForm.$submitted" class="fa fa-times"></i>
+            <input type="text"
+                   disabled
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'DRIVER_LICENSE' | translate }}" 
+                   name="license_upload"
+                   ng-model-options="{getterSetter:true}"
+                   ng-model="licensedata">
+          </label>
+
+          <label data-tap-disabled="true" ng-if="showPermit" ng-click="openForm('permit')" 
+                 class="item item-input item-stacked-label">
+            <i ng-if="!permit_filled && !mainForm.$submitted" class="fa fa-chevron-right"></i>
+            <i ng-if="permit_filled" class="fa fa-check"></i>
+            <i ng-if="!permit_filled && mainForm.$submitted" class="fa fa-times"></i>
+            <input type="text"
+                   disabled
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'CITY_PERMITS' | translate }}" 
+                   name="license_upload"
+                   ng-model-options="{getterSetter:true}"
+                   ng-model="permitdata">
+          </label>
+
+          <label data-tap-disabled="true" ng-if="showVehicle" ng-click="openForm('vehicle')"
+                 class="item item-input item-stacked-label">
+            <i ng-if="!vehicle_filled && !mainForm.$submitted" class="fa fa-chevron-right"></i>
+            <i ng-if="vehicle_filled" class="fa fa-check"></i>
+            <i ng-if="!vehicle_filled && mainForm.$submitted" class="fa fa-times"></i>
+            <input type="text"
+                   disabled
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'VEHICLE_INFO' | translate }}" 
+                   name="license_upload"
+                   ng-model-options="{getterSetter:true}"
+                   ng-model="vehicledata">
+          </label>
+
+          <label data-tap-disabled="true" ng-if="!$root.picData" ng-click="openForm('personalpic')" 
+                 class="item item-input item-stacked-label">
+            <i ng-if="!personal_filled && !mainForm.$submitted" class="fa fa-chevron-right"></i>
+            <i ng-if="personal_filled" class="fa fa-check"></i>
+            <i ng-if="!personal_filled && mainForm.$submitted" class="fa fa-times"></i>
+            <input type="text"
+                   disabled
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'PERSONAL_PIC' | translate }}" 
+                   name="license_upload"
+                   ng-model-options="{getterSetter:true}"
+                   ng-model="personaldata">
+          </label>
+          {{pesonal_filled}}
+        </div>
+        <div class="form-error" ng-show="!allFormsFilled && mainForm.$submitted">{{ 'FILL_ALL_FORMS' | translate }}</div>
+      </form>
+      <div class="row text-center">
+          <div class="col">
+              <button on-tap="save(mainForm)" class="mt30 button app-btn yellow">{{ 'SUBMIT' | translate }}</button>
+          </div>
+      </div>
+    </ion-content>
+    <!-- <button on-swipe-right="save(mainForm)" class="quoteMapBtn hide-on-keyboard-open">{{ 'SUBMIT' | translate }}</button> -->
+</ion-view>

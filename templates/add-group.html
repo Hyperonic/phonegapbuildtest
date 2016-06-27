@@ -1,0 +1,242 @@
+<ion-view title="{{ groupHeader | translate }}" class="">
+<ion-nav-title>
+        <img class="nav-img" ng-if="groupImg" ng-src="{{groupImg}}">
+        {{ groupHeader | translate }}
+    </ion-nav-title>
+  <ion-nav-buttons side="right">
+      <button side="right" class="button button-icon ion-checkmark" ng-click="addGroup(groupForm)"></button>
+  </ion-nav-buttons>
+  <ion-content class="custom-radio has-icon has-footer">
+    <form name="$parent.groupForm" novalidate="novalidate" autocomplete="off">
+    <div class="list list-inset app-form login-form">
+
+            <label class="item item-input">
+               <i class="fa"></i>
+                <input type="text" name="name" ng-model="groupData.name" required placeholder="{{ 'NAME' | translate }}">
+           </label>
+              <div ng-if="groupForm.name.$invalid" class="form-errors" ng-show="groupForm.name.$error && groupForm.$submitted" ng-messages="groupForm.name.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+          <!-- <label class="item item-input item-stacked-label item-margin">
+            <span class="input-label">{{ 'REFERRED_BY' | translate }}</span>
+            <i class="fa"></i>
+            <input type="text" name="referred" ng-model="groupData.referred" placeholder="driver01">
+          </label> -->
+          <label class="item item-input" ng-click="picOption($event, 'pic')">
+               <i ng-if="groupData.pic" class="fa fa-check"></i>
+                <input disabled class="readonly" type="text" name="pic" ng-model="groupData.image" placeholder="{{ 'PICTURE' | translate }}">
+           </label>
+           <div class="list list-inset cont-list" ng-click="resizeScroll()">
+             <label ng-click="$parent.showList = !$parent.showList" class="item item-input item-stacked-label item-margin ">
+              <i ng-class="$parent.showList ? 'ion-android-arrow-dropup': 'ion-android-arrow-dropdown'" class="icon dropdown-icon"></i>
+              <input type="text"
+                     style="cursor:pointer"
+                     placeholder="{{ 'SETTINGS' | translate }}" 
+                     name="settings"
+                     readonly="true">
+            </label>
+            <ion-list ng-show="$parent.showList" class="">
+                <ion-checkbox ng-class="{'chked-item': setting.enabled}" ng-repeat="setting in settings" class="item-checkbox-right quotechkbox"
+                            ng-model="setting.enabled">{{ setting.text | translate }}
+              </ion-checkbox>
+            </ion-list>
+            </div>
+
+            <!-- <label class="item item-input">
+               <i class="fa"></i>
+                <input type="text" name="default_name" ng-model="groupData.default_name" required placeholder="{{ 'DEFAULT_GROUP_NAME' | translate }}">
+           </label>
+              <div ng-if="groupForm.default_name.$invalid" class="form-errors" ng-show="groupForm.default_name.$error && groupForm.$submitted" ng-messages="groupForm.default_name.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div> -->
+
+            <div class="app-toggle addgroup-toggle">
+              <ion-toggle ion-toggle-text toggle-class="toggler" ng-on-value="Yes" ng-off-value="No" data-booked="{{groupData.allow_queue}}" ng-model="groupData.allow_queue">
+                {{ 'ALLOW_QUEUE' | translate }}
+              </ion-toggle>
+            </div>
+            
+            <div class="list list-inset cont-list" ng-click="resizeScroll()">
+              <label ng-click="showMarket()" class="item item-input item-stacked-label item-margin ">
+              <i ng-if="filteredCenters.length > 0" ng-class="$parent.showMarketList ? 'ion-android-arrow-dropup': 'ion-android-arrow-dropdown'" class="icon dropdown-icon"></i>
+              <input type="text"
+                     style="cursor:pointer"
+                     placeholder="{{ 'CENTER_PLACE_MARKER' | translate }}" 
+                     name="centers"
+                     readonly="true">
+              </label>
+              <ion-list ng-show="$parent.showMarketList" class="">
+                  <button on-tap="viewMarket()" class="register-btn button app-btn yellow">{{ 'ADD_MORE' | translate }}</button>
+                  <ion-item ng-repeat="center in filteredCenters" class="item-icon-right" ng-click="viewMarket(center,$index)">
+                  <i class="icon ion-android-open"></i>{{center.name}}
+                </ion-item>
+              </ion-list>
+            </div>
+
+            <div class="list list-inset cont-list" ng-click="resizeScroll()">
+              <label ng-click="showPlan()" class="item item-input item-stacked-label item-margin ">
+              <i ng-if="rateplans.length > 0" ng-class="$parent.showPlanList ? 'ion-android-arrow-dropup': 'ion-android-arrow-dropdown'" class="icon dropdown-icon"></i>
+              <input type="text"
+                     style="cursor:pointer"
+                     placeholder="{{ 'RATE_PLANS' | translate }}" 
+                     name="plans"
+                     readonly="true">
+              </label>
+              <ion-list ng-show="$parent.showPlanList" class="">
+                  <button on-tap="viewPlan()" class="register-btn button app-btn yellow">{{ 'ADD_MORE' | translate }}</button>
+                  <ion-item ng-repeat="plan in rateplans" class="item-icon-right" ng-click="viewPlan(plan,$index)">
+                  <i class="icon ion-android-open"></i>{{plan.name}}
+                </ion-item>
+              </ion-list>
+            </div>
+
+            <!-- <label ng-if="groupData.lat" class="item item-input">
+              <input type="number"
+                     min="0.1" 
+                     step="any"
+                     required
+                     placeholder="{{ 'RADIUS' | translate }} ({{ 'MILES'| translate }})" 
+                     name="radius"
+                     ng-model="groupData.radius"
+                     required>
+            </label>
+            <div ng-if="groupForm.radius.$invalid" class="form-errors" 
+                 ng-show="groupForm.radius.$error && groupForm.$submitted"
+                 ng-messages="groupForm.radius.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div> -->
+
+            <label class="item item-input">
+              <input type="number"
+                     min="0" 
+                     required
+                     placeholder="{{ 'ADVANCE_RESERVATION' | translate }}" 
+                     name="offer"
+                     ng-model="groupData.allow_advance_reservation"
+                     required>
+            </label>
+            <div ng-if="groupForm.allow_advance_reservation.$invalid" class="form-errors" 
+                 ng-show="groupForm.allow_advance_reservation.$error && groupForm.$submitted"
+                 ng-messages="groupForm.allow_advance_reservation.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input">
+              <input type="number"
+                     min="0" 
+                     required
+                     placeholder="{{ 'REMOTE_RESERVATION' | translate }}" 
+                     name="offer"
+                     ng-model="groupData.allow_remote_reservation"
+                     required>
+            </label>
+            <div ng-if="groupForm.allow_remote_reservation.$invalid" class="form-errors" 
+                 ng-show="groupForm.allow_remote_reservation.$error && groupForm.$submitted"
+                 ng-messages="groupForm.allow_remote_reservation.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+          
+            <label class="item item-input">
+              <input type="number"
+                     min="5" 
+                     required
+                     placeholder="{{ 'OFFER_TIME' | translate }}" 
+                     name="offer"
+                     ng-model="groupData.offer"
+                     required>
+            </label>
+            <div ng-if="groupForm.offer.$invalid" class="form-errors" 
+                 ng-show="groupForm.offer.$error && groupForm.$submitted"
+                 ng-messages="groupForm.offer.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+            <label class="item item-input">
+              <input type="number"
+                     required
+                     min="5" 
+                     placeholder="{{ 'JAIL_TIME' | translate }}" 
+                     name="jail"
+                     ng-model="groupData.jail"
+                     required>
+            </label>
+            <div ng-if="groupForm.jail.$invalid" class="form-errors" 
+                 ng-show="groupForm.jail.$error && groupForm.$submitted"
+                 ng-messages="groupForm.jail.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+
+            <div ng-if="groupData.allow_advance_reservation > 0" class="list list-inset cont-list" ng-click="resizeScroll()">
+             <label ng-click="$parent.showServList = !$parent.showServList" class="item item-input item-stacked-label item-margin ">
+              <i ng-class="$parent.showServList ? 'ion-android-arrow-dropup': 'ion-android-arrow-dropdown'" class="icon dropdown-icon"></i>
+              <input type="text"
+                     style="cursor:pointer"
+                     placeholder="{{ 'NO_DRIVER_SERVICES' | translate }}" 
+                     name="services"
+                     readonly="true">
+            </label>
+            <ion-list ng-show="$parent.showServList" class="">
+                <ion-checkbox ng-class="{'chked-item': service.enabled}" ng-repeat="service in services" ng-click="noService(service)" class="item-checkbox-right quotechkbox"
+                            ng-model="service.enabled"><img ng-src="{{service.icon}}" height="20px" />{{ service.text | translate }}
+              </ion-checkbox>
+            </ion-list>
+            </div>
+
+      </div>
+        <div class="row item-checkbox">
+            <div class="col text-center">
+                <label class="item item-checkbox">
+                  <div class="checkbox checkbox-input-hidden checkbox-circle">
+                  <input type="checkbox" name="active" ng-model="groupData.active" ng-true-value="1"><i class="checkbox-icon"></i></div>
+                  <div class="item-content">{{'ACTIVE' | translate}}</div>
+                </label>
+            </div>
+        </div>
+      <!-- <div class="list list-inset card">
+        <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : groupForm.name.$invalid  && groupForm.$submitted}">
+            <input type="text"
+                   placeholder="{{ 'NAME' | translate }}" 
+                   name="name"
+                   ng-model="groupData.name" 
+                   ng-minlength="2"
+                   required>
+          </label>
+
+          <div ng-if="groupForm.name.$invalid" class="form-errors" ng-show="groupForm.name.$error && groupForm.$submitted" ng-messages="groupForm.name.$error"
+          ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-click="picOption($event, 'pic')" 
+                class="item item-input">
+            <input type="text"
+                   class="readonly"
+                   readonly="true"
+                   placeholder="{{ 'PICTURE' | translate }}" 
+                   name="pic"
+                   ng-model="groupData.image">
+            <i ng-if="groupData.pic" class="icon button-icon ion-checkmark"></i>
+          </label>
+
+            <li class="item item-checkbox">
+              <label class="checkbox">
+                  <input type="checkbox" name="active" ng-model="groupData.active" ng-true-value="1"/>
+              </label>
+                 {{'ACTIVE' | translate}}
+            </li>
+
+            <input ng-hide="true" type="file" id="group_pic_upload" ng-model="groupimage" name="file" base-sixty-four-input onloadend="picLoaded" maxsize="500" accept="image/jpeg">
+
+        </div> -->
+    </form>
+      <div class="row">
+          <div class="col text-center">
+              <button on-tap="addGroup(groupForm)" class="register-btn button app-btn yellow">{{ groupFooter | translate }}</button>
+          </div>
+      </div>
+      <input ng-hide="true" type="file" id="group_pic_upload" ng-model="groupimage" name="file" base-sixty-four-input onloadend="picLoaded" maxsize="500" accept="image/jpeg">
+  </ion-content>
+<!--   <button on-swipe-right="addGroup(groupForm)" class="tp quoteMapBtn hide-on-keyboard-open button button-block icon-right ion-chevron-right button-balanced">{{ groupFooter | translate }}</button> -->
+</ion-view >
+

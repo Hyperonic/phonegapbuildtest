@@ -1,0 +1,63 @@
+<ion-view class="fancy-select-items modal">
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+
+    <button ng-if="showBackBtn" ng-click="modal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+
+    <h1 class="title">{{headerText}}</h1>
+
+    <button ng-if="items.length > 0" ng-click="validate()" class="button button-positive button-icon ion-checkmark"></button>
+
+    <button ng-if="items.length == 0" ng-click="modal.hide()" class="button button-positive button-icon ion-close"></button>
+
+  </ion-header-bar>
+  <ion-header-bar ng-if="heading && items.length > 0" class="bar-subheader bar-danger">
+      <p>{{heading}}</p>
+  </ion-header-bar>
+  <ion-content ng-class="{'has-subheader':heading && items.length > 0}" class="custom-radio has-icon">
+    <div ng-if="items.length > 0" class="list">
+    <div class="list">
+      <!-- Multi select -->
+      <label
+                  ng-repeat="item in items"
+                  ng-if="multiSelect"
+                  ng-checked="item.checked"
+                  ng-model="item.checked"
+                  ng-click='validateMultiple(item)'
+                  class="item item-text-wrap"
+                  ng-class="{'checkedFancyItem': item.checked==true}">
+        <div class="fancy-select-icon" ng-if="item.icon != null">
+          <i class="icon-{{item.text}}" ng-style="{'background-image': 'url({{item.icon}})'}"></i>
+          <img ng-src="{{item.icon}}" height="20px" />
+        </div>
+        {{item.text}}
+        <span class="limit" ng-if="item.disabled">{{ 'LIMIT_REACHED' | translate}}</span>
+        <i ng-if="item.checked==true" style="float: right" class="radio-icon ion-checkmark"></i>
+      </label>
+      <!-- Single select -->
+      <label
+             ng-repeat="item in items"
+             ng-if="!multiSelect"
+             class="item item-text-wrap"
+             ng-class="{'checkedFancyItem': item.checked==true}"
+             ng-click='validateSingle(item)'>
+        <div class="fancy-select-icon" ng-if="item.icon != null">
+          <i class="icon-{{item.text}}" ng-style="{'background-image': 'url({{item.icon}})'}"></i>
+          <img height="20px" ng-src="{{item.icon}}" />
+        </div>
+        {{item.text}}
+        <span class="detail servnumberCircle" ng-if="itemsDetail && numDrivers(item.text) > 0">{{numDrivers(item.text)}}</span>
+        <i ng-if="item.checked==true" style="float: right" class="radio-icon ion-checkmark"></i>
+      </label>
+      </div>
+    </div>
+      <div class="no-employee" ng-show="items.length == 0">
+            <h2>{{emptyText}}</h2>
+      </div>
+      </div>
+    <div ng-if="items.length > 0" class="row text-center">
+        <div class="col">
+            <button on-tap="validate()" class="register-btn button app-btn yellow ng-binding disable-user-behavior">{{ 'SET' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

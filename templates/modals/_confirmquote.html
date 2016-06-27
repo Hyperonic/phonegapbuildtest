@@ -1,0 +1,18 @@
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="alertPopup.close()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'QUOTE_SUMMARY' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div style="margin:10px" class="item-content item-text-wrap">
+        <p><strong>{{ 'PICKUP' | translate }}</strong>: {{quoteForm.pickup.formatted_address}}</p>
+        <p><strong>{{ 'DROPOFF' | translate }}</strong>: {{quoteForm.dropoff.formatted_address}}</p>
+        <p><strong>{{ 'SERVICE' | translate }}</strong>: {{quoteForm.service.replace('&selectService[]=', ', ')}}</p>
+        <p><strong>{{ 'SEATS' | translate }}</strong>: {{quoteForm.people}}</p>
+        <p ng-if="quoteForm.note!=''"><strong>{{ 'NOTES' | translate }}</strong>: {{quoteForm.note}}</p>
+        <p><strong>{{ 'DATE_TIME' | translate }}</strong>: {{quoteForm.date}} {{quoteForm.time}}</p>
+        <p><strong>{{ 'ROUTE' | translate }}</strong>: {{estDist}} {{ 'MILES' | translate }}</p>
+        <p><strong>{{ 'EST_TIME' | translate }}</strong>: {{estTime}}</p>
+        <p ng-if="quoteForm.coupon != null"><strong>{{ 'DISCOUNT_CODE' | translate }}</strong>: {{quoteForm.coupon}}</p>
+        <p ng-if="splitFare.length>0"><strong>{{ 'SPLIT_FARE' | translate }}</strong>: {{splitFare}}</p>
+    </div>
+  </ion-content>

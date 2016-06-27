@@ -1,0 +1,38 @@
+<ion-view title="{{ employee.firstName }} {{ employee.lastName }}">
+<ion-nav-buttons side="right">
+    <div ng-if="employee.intrip && !unloaded" class="buttons">
+        <button class="button button-icon ion-more" ng-click="popoverDetail.show($event)"></button>
+    </div>
+    </ion-nav-buttons>
+  <ion-content has-subfooter has-header="true" padding="true">
+      
+      <div scroll="false" id="detailmap" ng-class="{'detailmapwithfooter': employee.intrip && !unloaded}" padding="true" data-tap-disabled="true"></div>
+      <!-- <button ng-if="employee.intrip && !unloaded" on-tap="footerBtnTap(arrivedloadunload)" ng-class="{'bt65' : employee.intrip && !unloaded}"
+              class="quoteMapBtn">
+              {{arrivedloadunload | translate}}
+      </button> -->
+      <div class="text-center mapBtn" ng-class="{'bt65' : employee.intrip && !unloaded}">
+            <div class="col">
+                <button on-tap="footerBtnTap(arrivedloadunload)" class="register-btn button app-btn yellow">{{arrivedloadunload | translate}}
+                </button>
+            </div>
+        </div>
+  </ion-content>
+  <div ng-class="(isToggled ?'detailtapped': 'detailnormal') + ' ' + (employee.intrip && !unloaded ? 'detailwithfooter': 'detailwithnofooter')" class="nopadding bar bar-subfooter bar-stable">
+        <div class="details">
+          <div class="details-img">
+              <img ng-src="{{employee.pic }}" ng-click="showLargImage(employee.pic)" />
+             </div>
+             <div style="width: 80%;" class="details-content">
+              <h4>{{ employee.firstName }} {{ employee.lastName }}</h4>
+               <p ng-hide="employee.license == 'undefined'"><i class="button-icon icon ion-card"></i>{{ employee.license }} - <i class="button-icon icon ion-model-s"></i>{{employee.vehicle}}</p>
+                 <p>{{ employee.city }}</p>
+             </div>
+             <div class="clear"></div>
+        </div>
+        <accordion cls="customaccord" obj="accordion"><a class="item item-icon-left accordian-list" ng-href="{{item.link}}" ng-if="item.condition"><i class="{{item.icon}}"></i><h3>{{item.label}}</h3><p>{{item.text}}</p></a></accordion>
+  </div>
+  <ion-footer-bar ng-disable="disableArrive" ng-if="employee.intrip && !unloaded" class="nopadding tripsubfooter">
+    <button on-swipe-right="footerBtnTap(arrivedloadunload)" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">{{arrivedloadunload | translate}}</button>
+  </ion-footer-bar>
+</ion-view>

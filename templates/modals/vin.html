@@ -1,0 +1,97 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="removeVinModal()">{{ 'BACK' | translate }}</button>
+    </div>
+    <h1 class="title">{{ 'VIN' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="signup-content text-center">
+        <form class="mt30" name="vinForm" novalidate="">
+          <div class="list list-inset app-form login-form">
+            <label class="item item-input">
+              <i class="fa"></i>
+              <input type="text"
+                     placeholder="{{ 'VIN' | translate }}" 
+                     name="vin"
+                     ng-model="vehicleData.vin"
+                     vin
+                     ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1200, 'blur': 0} }"
+                     on-done="done(res)"
+                     required>
+            </label>
+
+            <div ng-if="vinForm.vin.$invalid" class="form-errors" ng-show="vinForm.vin.$error && vinForm.$submitted" ng-messages="vinForm.vin.$error">
+            <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+
+            <label class="item item-input">
+              <input type="text"
+                     placeholder="{{ 'MAKE' | translate }}" 
+                     name="make"
+                     ng-model="vehicleData.make"
+                     ng-minlength="2" 
+                     required>
+            </label>
+            <div ng-if="vinForm.make.$invalid" class="form-errors" 
+                 ng-show="vinForm.make.$error && vinForm.$submitted"
+                 ng-messages="vinForm.make.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input">
+              <input type="text"
+                     placeholder="{{ 'MODEL' | translate }}" 
+                     name="model"
+                     ng-model="vehicleData.model"
+                     ng-minlength="2" 
+                     required>
+            </label>
+            <div ng-if="vinForm.model.$invalid" class="form-errors" 
+                 ng-show="vinForm.model.$error && vinForm.$submitted"
+                 ng-messages="vinForm.model.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input">
+             <date-picker
+                config="{ minView: 'year', startView: 'year' }"
+                heading="{{ 'YEAR' | translate }}"
+                name="year"
+                ng-model="vehicleData.year"
+                callback="saveDateTime(selDate, field)"
+                required
+                renderbefore=""
+                is-icon='false'>
+              </date-picker>
+            </label>
+            <div ng-if="vinForm.year.$invalid" class="form-errors" 
+                 ng-show="vinForm.year.$error && vinForm.$submitted"
+                 ng-messages="vinForm.year.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input">
+              <input type="text"
+                     placeholder="{{ 'TYPE' | translate }}" 
+                     name="type"
+                     ng-model="vehicleData.type"
+                     ng-minlength="2" 
+                     required>
+            </label>
+            <div ng-if="vinForm.type.$invalid" class="form-errors" 
+                 ng-show="vinForm.type.$error && vinForm.$submitted"
+                 ng-messages="vinForm.type.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+            
+          </div>
+          <div class="row">
+              <div class="col">
+                  <button on-tap="saveVin(vinForm)" class="mt30 button app-btn yellow">{{ 'SUBMIT' | translate }}</button>
+              </div>
+          </div>
+        </form>
+  </ion-content>
+</ion-modal-view >
+

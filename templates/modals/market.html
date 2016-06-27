@@ -1,0 +1,107 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+      <button class="button button-icon ion-ios-arrow-back" ng-click="removeMarketModal()">{{ 'BACK' | translate }}</button>
+    </div>
+    <h1 class="title">{{ 'CENTER_PLACE_MARKER' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+        <form class="mt30" name="marketForm" novalidate="">
+          <div class="list list-inset app-form market-form">
+              <label class="item item-input">
+                <input type="text"
+                       required
+                       placeholder="{{ 'NAME' | translate }}" 
+                       name="name"
+                       ng-model="groupData.center_name"
+                       ng-change="verifyDuplicate(marketForm)"
+                       required>
+              </label>
+              <div ng-if="marketForm.name.$invalid" class="form-errors" 
+                   ng-show="marketForm.name.$error && marketForm.$submitted"
+                   ng-messages="marketForm.name.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+                   <div class="form-error" ng-message="duplicate">
+                      {{ 'SAME_ZONE_EXISTS' | translate }}
+                    </div>
+              </div>
+
+            <div class="list list-inset cont-list" ng-click="resizeScroll()">
+              <div class="modal-list-items bar item-input-inset search-bar">
+                 <label class="item-input-wrapper">
+                 <!-- <label class="item item-input item-stacked-label item-margin "> -->
+                  <input type="search"
+                         class="google-place-search centerautocomplete"
+                         style="cursor:pointer"
+                         placeholder="{{ 'CENTER_PLACE_MARKER' | translate }}" 
+                         name="center"
+                         required
+                         ng-model="groupData.center">
+                </label>
+                <span ng-click="clearSearch()" ng-class="{'ion-ios-close' : groupData.center.length > 0, 'ion-search': groupData.center.length < 1}" class="searchicon button button-clear ft25"></span>
+              </div>
+              <ion-list ng-show="typed && locations.length > 0" class="">
+                <ion-item ng-class="{'chked-item': service.enabled}" ng-repeat="location in locations" class="item-text-wrap" ng-click="selectLocation(location)"><i class="mr5 icon ion-location"></i>{{ location.formatted_address }}
+                </ion-item>
+              </ion-list>
+              </div>
+              <div ng-if="marketForm.center.$invalid" class="form-errors" 
+                   ng-show="marketForm.center.$error && marketForm.$submitted"
+                   ng-messages="marketForm.center.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     min="0.1"
+                     max="{{$root.milesRadius}}" 
+                     step="any"
+                     required
+                     placeholder="{{ 'RADIUS' | translate }} ({{ 'MILES'| translate }})" 
+                     name="radius"
+                     ng-model="groupData.radius"
+                     required>
+              </label>
+              <div ng-if="marketForm.radius.$invalid" class="form-errors" 
+                   ng-show="marketForm.radius.$error && marketForm.$submitted"
+                   ng-messages="marketForm.radius.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+                   <div class="form-error" ng-message="max">
+                      {{ 'INVALID_MAX_NUMBER' | translate }}{{$root.milesRadius}}
+                    </div>
+              </div>
+
+              <label class="item item-input">
+              <input type="number"
+                     min="0.1"
+                     max="{{groupData.radius}}" 
+                     step="any"
+                     required
+                     placeholder="{{ 'ZONE_RADIUS' | translate }} ({{ 'MILES'| translate }})" 
+                     name="zone_radius"
+                     ng-model="groupData.zone_radius"
+                     required>
+              </label>
+              <div ng-if="marketForm.zone_radius.$invalid" class="form-errors" 
+                   ng-show="marketForm.zone_radius.$error && marketForm.$submitted"
+                   ng-messages="marketForm.zone_radius.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+                   <div class="form-error" ng-message="max">
+                      {{ 'INVALID_MAX_NUMBER' | translate }}{{'RADIUS' | translate}}
+                    </div>
+              </div>
+          </div>
+          <div ng-if="groupData.center_id" class="row offerBtnDecline">
+              <div class="col">
+                  <button on-tap="deleteMarket()" class="mt30 button app-btn yellow">{{ 'DELETE' | translate }}</button>
+              </div>
+          </div>
+          <div ng-if="centerSelected" class="row">
+              <div class="col">
+                  <button on-tap="saveMarket(marketForm)" class="mt10 button app-btn yellow">{{ 'SAVE' | translate }}</button>
+              </div>
+          </div>
+        </form>
+  </ion-content>
+</ion-modal-view >
+

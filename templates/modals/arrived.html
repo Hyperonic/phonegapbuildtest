@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <h1 class="title">{{ 'MESSAGE' | translate }}</h1>
+  </ion-header-bar>
+  <ion-header-bar class="bar-subheader bar-danger">
+      <p>{{$root.arrivedModal.tripData.first_name}} {{ 'ARRIVED' | translate }}</p>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon">
+    <div class="list">
+        <form name="arrivedform" id="arrived-msg">
+            <!-- <div class="item listheaders">
+                <span>{{$root.arrivedModal.tripData.first_name}} {{ 'ARRIVED' | translate }}</span>
+              </div> -->
+            <ion-radio ng-repeat="msg in arrivedmsgs" ng-init="arrivedmsg.default=arrivedmsgs[0].val" ng-model="arrivedmsg.default" ng-value="msg.val">{{msg.text | translate}}</ion-radio>
+            <!--<ion-radio ng-model="arrivedmsg.default" ng-value="'OK'">{{ 'OK' | translate }}</ion-radio>
+            <ion-radio ng-model="arrivedmsg.default" ng-value="'Other'">{{ 'OTHER' | translate }}</ion-radio>-->
+            <label ng-hide="otherArrivedSelected" class="item item-input validated">
+              <textarea rows="4" placeholder="{{ 'ENTER_MESSAGE' | translate }}" required name="msgarrived" ng-model="arrivedmsg.other" msd-elastic></textarea>
+            </label>
+        </form>
+    </div>
+    <div class="row text-center">
+        <div class="col">
+            <button on-tap="removeArrived()" ng-disabled="msgArrivedNotSelected" class="register-btn button app-btn yellow">{{ 'SEND' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view >
+

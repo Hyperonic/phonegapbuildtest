@@ -1,0 +1,21 @@
+<ion-popover-view>
+	<ion-content>
+	  <ion-list>
+	  	  <ion-item ng-click="setMessaging()">
+		    {{ sendmsgquote | translate }}
+		  </ion-item>
+		  <ion-item ng-if="!messaging && (employees|filter:filterMe).length != 0" ng-click="reorder()">
+		    {{ 'REORDER' | translate }}
+		  </ion-item>
+		  <ion-item ng-if="!messaging && (employees|filter:filterMe).length != 0" ng-click="bydist()">
+		    {{ 'SORT_DISTANCE' | translate }}
+		  </ion-item>
+		  <ion-item ng-if="isAdmin" ng-click="add()">
+		    {{ 'ADD' | translate }}
+		  </ion-item>
+		  <ion-item ng-if="isAdmin && (employees|filter:filterMe).length != 0" ng-click="delete()">
+		    {{ 'DELETE' | translate }}
+		  </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-popover-view>

@@ -1,0 +1,29 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <div class="buttons">
+    </div>
+    <h1 class="title">{{ 'TIP' | translate }}</h1>
+    <button ng-click="saveTip()" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-content>
+    <div class="list">
+        <div class="list card">
+          <h4 class="center">{{ 'SELECT_TIP' | translate }}</h4>
+          <label
+                      ng-repeat="item in tips"
+                      ng-checked="item.checked"
+                      ng-click='tipChecked(item)'
+                      class="item item-text-wrap"
+                      ng-class="{'checkedFancyItem': item.checked==true}">
+            {{item.text}}
+            <i ng-if="item.checked==true" style="float: right" class="radio-icon ion-checkmark"></i>
+          </label>
+          <label ng-hide="otherTipSelected" class="item item-input">
+              <input type="number" placeholder="{{ 'ENTER_TIP' | translate }}" name="othertip" ng-model="tip.other"></input>
+            </label>
+            </div>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view >
+

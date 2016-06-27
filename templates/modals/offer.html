@@ -1,0 +1,38 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <h1 class="title ft19">{{'OFFER' | translate}}@{{offerDetail.group_name}}, {{items[0].text}} {{'FROM_PICKUP' | translate}}..{{$root.offerCountDown}}..{{$root.offerMaxTime}}..{{showOfferCountDown}}</h1>
+  </ion-header-bar>
+  <div class="signup-content grey countdown-subheader">
+        <countdown countdown="$root.offerCountDown" max="$root.offerMaxTime"></countdown>
+    </div>
+  <ion-content class="signup-content grey has-countdown">
+      <!-- <div class="bar-danger"><p><span class="expirytxt">{{ 'TRIP_OFFER_EXPIRES_IN' | translate }}</span><timer interval="1000" countdown=offerCountDown>{{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer></p></div> -->
+      <!--<div style="margin:10px" class="item-content item-text-wrap">
+        <p><strong>{{ 'DATE_TIME' | translate }}</strong>: {{offerDetail.selectDate}} {{offerDetail.selectTime}} 
+        |<strong>{{ 'ROUTE' | translate }}</strong>: {{offerDetail.route_distance}} {{ 'MILES' | translate }} 
+        |<strong>{{ 'PICKUP_DISTANCE' | translate }}</strong>: {{offerDetail.distance_pickup}} {{ 'MILES' | translate }}</p>
+    </div>-->
+     <accordion obj="accordion" class="quoteofferdetail">
+        <p><strong>{{item.label}}</strong>: {{item.text}}</p>
+      </accordion>
+        <h2 ng-if="mode == 'quote'" id="offerPrice">{{ 'PRICE' | translate }} {{offerDetail.price}}</h2>
+      <div class="row text-center bottomBtn2 offerBtnDecline">
+          <div class="col">
+              <button ng-disabled="offerNotInProcess" on-tap="declineOffer()" class="register-btn button app-btn">{{ 'DECLINE' |translate}}</button>
+          </div>
+      </div>
+      <div class="row text-center bottomBtn offerBtnAccept">
+          <div class="col">
+              <button ng-disabled="offerNotInProcess" on-tap="acceptOffer()" class="register-btn button app-btn yellow">{{ 'ACCEPT' | translate }}</button>
+          </div>
+      </div>
+  </ion-content>
+  <!-- <ion-footer-bar class="offerft nopadding">
+    <div class="row" style="margin-bottom:5px">
+      <button ng-disabled="offerNotInProcess" on-tap="declineOffer()" class="footerBtn button button-full button-assertive">{{ 'DECLINE' | translate }}</button>
+    </div>
+    <div class="row">
+      <button ng-disabled="offerNotInProcess" on-tap="acceptOffer()" class="footerBtn button button-full button-balanced">{{ 'ACCEPT' | translate }}</button>
+    </div>
+</ion-footer-bar> -->
+</ion-modal-view>

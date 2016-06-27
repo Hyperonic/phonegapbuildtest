@@ -1,0 +1,54 @@
+  <ion-modal-view class="confirmquoteModal">
+  <ion-header-bar class="app-bar bar-dark">
+    <button ng-click="alertPopup.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'QUOTE_SUMMARY' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="signup-content grey">
+    <div class="item-content item-text-wrap confirmquote">
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'PICKUP' | translate }}</strong>: {{quoteForm.pickup.formatted_address}}</p><i ng-click="editPickup('pickup')" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'DROPOFF' | translate }}</strong>: {{quoteForm.dropoff.formatted_address}}</p>
+          <i ng-click="editPickup('dropoff')" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'SERVICE' | translate }}</strong>: {{quoteForm.service.replace('&selectService[]=', ', ')}}</p><i ng-click="editService()" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'SEATS' | translate }}</strong>: {{quoteForm.people}}</p><i ng-if="$root.allow_multiple_passengers" ng-click="editSeats()" class="icon ion-edit button editquote"></i>
+        </div>
+        <div ng-if="quoteForm.note!=''" class="row">
+          <p class="col col-85"><strong>{{ 'NOTES' | translate }}</strong>: {{quoteForm.note}}</p><i ng-click="editNotes()" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'RANGE' | translate }}</strong>: {{quoteForm.range}} {{ 'MILES' | translate }}</p><i ng-click="editPickup('range')" class="icon ion-edit button editquote"></i>
+        </div>
+        <div ng-if="quoteForm.price > 0" class="row">
+          <p class="col col-85"><strong>{{ 'PRICE' | translate }}</strong>: ${{quoteForm.price}}</p><i ng-click="editPickup('price')" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'DATE_TIME' | translate }}</strong>: {{quoteForm.date}} {{quoteForm.time}}</p><i ng-click="editDate()" ng-if="$root.allow_advance_reservation != 0" class="icon ion-edit button editquote"></i>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'ROUTE' | translate }}</strong>: {{estDist}} {{ 'MILES' | translate }}</p>
+        </div>
+        <div class="row">
+          <p class="col col-85"><strong>{{ 'EST_TIME' | translate }}</strong>: {{estTime}}</p>
+        </div>
+        <!-- <p><strong>{{ 'BID_MODE' | translate }}</strong>: <ion-toggle ion-toggle-custom-text class="modetoggler reviewtoggle button button-icon icon" ng-true-text="'{{ 'BID_ON' | translate }}'" ng-false-text="'{{ 'BID_OFF' | translate }}'" ng-true-value="'quote'" ng-false-value="'offer'" ng-model="quoteForm.qmode">
+                </ion-toggle></p> -->
+        <div ng-if="quoteForm.coupon != null" class="row">
+          <p class="col col-85"><strong>{{ 'DISCOUNT_CODE' | translate }}</strong>: {{quoteForm.coupon}}</p>
+        </div>
+        <div ng-if="splitFare.length>0" class="row">
+          <p class="col col-85"><strong>{{ 'SPLIT_FARE' | translate }}</strong>: {{splitFare}}</p><i ng-click="editSeats()" class="icon ion-edit button editquote"></i>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col">
+            <button on-tap="send()" class="register-btn button app-btn yellow">{{ 'CONFIRM' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+  </ion-modal-view>

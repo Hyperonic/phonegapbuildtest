@@ -1,0 +1,5 @@
+<i ng-if="isIcon == 'true'" class="col button button-icon icon ion-clock" ng-click="showDatepicker($event)"></i>
+
+<div ng-if="isIcon == 'false'" ng-form ng-click="showDatepicker($event)">
+<input disabled type="text" placeholder="{{heading}}" ng-model="ngModel" name="{{name}}">
+</div>

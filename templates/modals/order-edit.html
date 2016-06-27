@@ -1,0 +1,129 @@
+<ion-modal-view>
+	<ion-header-bar class="bar bar-header bar-positive bar-custom">
+		<button ng-click="orderModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+		<h1 class="title">{{ 'ORDER' | translate }}</h1>
+	</ion-header-bar>
+	<!-- <ion-header-bar ng-if="$root.allow_edit_trip_detail" class="bar bar-subheader">
+		<h1 class="title"></h1>
+		<button ng-if="!editForm" ng-click="edit()" class="button button-positive">Edit</button>
+		<button ng-if="editForm" ng-click="cancelEdit()" class="button button-grey">Cancel</button>
+		<button ng-if="editForm" ng-click="save()" class="button button-positive">Save</button>
+	</ion-header-bar> -->
+	<ion-content id="edit-page" class="custom-radio has-icon">
+		<form ng-if="$root.allow_edit_trip_detail" ng-show="editForm" name="orderForm" novalidate="novalidate">
+			  
+			    <label class="ordersearch">
+		            <!--<ion-google-place-single label-cancel="{{ 'CANCEL' | translate }}" style="display:none" placeholder="{{ 'ENTER_PICKUP' | translate }}" ng-change="orderChanged()" ng-model="editorder.pickup" />-->
+		            <label ng-if="$root.detail.status=='accept' || $root.detail.status=='arrived'" class="item item-input">
+				    <!-- <i class="icon icon-pick placeholder-icon ordericons"></i> -->
+				    <b><img src="img/markerA.png"></b>
+				    <input ng-model="editorder.pickup" type="text">
+			            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+	                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+	                              status="$root.detail.status"
+	                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+	                              ng-change="orderChanged()" callback="orderChanged(selVal)" required="required" ng-model="editorder"/>
+		        </label>
+			  </label>
+			    <label class="ordersearch">
+		           <!--<ion-google-place-single label-cancel="{{ 'CANCEL' | translate }}" style="display:none" placeholder="{{ 'ENTER_DROP' | translate }}" ng-change="orderChanged()" ng-model="editorder.dropoff" />-->
+		           <label class="item item-input">
+				    <!-- <i class="icon icon-drop placeholder-icon ordericons"></i> -->
+				    <b><img src="img/markerB.png"></b>
+				    <input ng-model="editorder.dropoff" type="text">
+		            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+                              status="$root.detail.status"
+                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+                              ng-change="orderChanged()" callback="orderChanged(selVal)" required="required" ng-model="editorder"/>
+		        </label>
+			  </label>
+			  <label class="item item-input">
+			    <i class="ordericons icon ion-clock placeholder-icon"></i>
+			    <date-picker
+	                    ng-model='editorder.time'
+	                    heading="{{ 'PICKUP_DATE' | translate }}"
+	                    renderafter
+	                    callback="saveDateTime(selDate)"
+	                    is-icon='false'>
+	            </date-picker>
+			  </label>
+			  <label class="item item-input">
+			    <i class="ordericons icon ion-person-add placeholder-icon"></i>
+			    <input readonly ng-model="editorder.selectPeople" ng-click="openSeats()" type="text">
+			    <seats is-icon='false' ng-hide="true" people="editorder.selectPeople" alertsplitfare="splitFare" splitfare="editorder.splitFare"></seats>
+			  </label>
+
+				<label class="item item-input">
+				    <i style="padding-right: 38px !important;" class="ordericons icon placeholder-icon"></i>
+				    <input ng-model="editorder.selectService" ng-click="showService($event)" type="text">
+		            <fancy-select
+		                      class="col button-icon icon mapIcons"
+		                      id="servicespanel"
+		                      header-text="{{ 'SERVICE' | translate }}"
+		                      heading="{{ 'SERVICE_TRIP' | translate }}"
+		                      empty-text="{{ 'NO_SERVICE' | translate }}"
+		                      allow-empty='false'
+		                      items="services"
+                              items-arr="editorder.selectedServices"
+		                      item-type="editorder.selectService"
+		                      arr-param="selectService"
+		                      callback="serviceSelected(selVal)"
+		                      only-icon='true'
+		                      note-img="{{serviceImg}}"
+		                      note-img-width="22"
+		                      note-img-height="30"
+		                      multi-select="true">
+		            </fancy-select>
+	            </label>
+	            <label class="ordersearch">
+		           <!--<ion-google-place-single label-cancel="{{ 'CANCEL' | translate }}" style="display:none" placeholder="{{ 'ENTER_DROP' | translate }}" ng-change="orderChanged()" ng-model="editorder.dropoff" />-->
+		           <label class="item item-input">
+				    <i class="icon ion-social-usd placeholder-icon ordericons"></i>
+				    <input ng-model="editorder.price" type="text">
+		            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+                              status="$root.detail.status"
+                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+                              ng-change="orderChanged()" callback="orderChanged(selVal)" required="required" ng-model="editorder"/>
+		        </label>
+			  </label>
+			  <label class="ordersearch">
+		           <!--<ion-google-place-single label-cancel="{{ 'CANCEL' | translate }}" style="display:none" placeholder="{{ 'ENTER_DROP' | translate }}" ng-change="orderChanged()" ng-model="editorder.dropoff" />-->
+		           <label class="item item-input">
+				    <i class="icon ion-pinpoint placeholder-icon ordericons"></i>
+				    <input ng-model="editorder.range" type="text">
+		            <ion-google-place style="display:none" id="icon-pickup" label-cancel="{{ 'CANCEL' | translate }}"
+                              placeholderpickup="{{ 'ENTER_PICKUP' | translate }}"
+                              status="$root.detail.status"
+                              placeholderdropoff="{{ 'ENTER_DROP' | translate }}"
+                              ng-change="orderChanged()" callback="orderChanged(selVal)" required="required" ng-model="editorder"/>
+		        </label>
+			  </label>
+		</form>
+		<div ng-show="!editForm" class="item-content item-text-wrap confirmquote">
+	      	<p class="col col-80 orderp padding"><b><img src="img/markerA.png"></b> {{editorder.pickup}}</p>
+	      	<p class="orderp padding"><b><img src="img/markerB.png"></b> {{editorder.dropoff}}</p>
+	      	<p class="orderp padding"><i class="mr10 readicons icon ion-clock"></i> {{editorder.time}}</p>
+	      	<p class="orderp padding"><i class="mr10 readicons icon ion-person-add"></i> {{editorder.selectPeople}}</p>
+	      	<p class="orderp padding"><img width="22" height="30" class="mr10 readicons" ng-src="{{serviceImg}}" /> {{editorder.selectService}}</p>
+	      	<p class="orderp padding"><i class="mr10 readicons icon ion-social-usd"></i> {{editorder.price}}</p>
+	      	<p class="orderp padding"><i class="mr10 readicons icon ion-pinpoint"></i> {{editorder.range}}</p>
+	    </div>
+	    <div ng-if="!editForm && $root.allow_edit_trip_detail" class="row text-center bottomBtn offerBtnAccept">
+          <div class="col">
+			<button on-tap="edit()" class="register-btn button app-btn yellow">{{ 'EDIT' | translate }}</button>
+          </div>
+      </div>
+      <div ng-if="editForm" class="row text-center cancel-btn offerBtnDecline">
+          <div class="col">
+              <button on-tap="cancelEdit()" class="register-btn button app-btn">{{ 'CANCEL' |translate}}</button>
+          </div>
+      </div>
+      <div ng-if="editForm" class="row text-center editorder-btn offerBtnAccept">
+          <div class="col">
+              <button on-tap="save()" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+          </div>
+      </div>  
+	</ion-content>
+</ion-modal-view>  

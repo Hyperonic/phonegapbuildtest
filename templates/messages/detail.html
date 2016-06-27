@@ -1,0 +1,79 @@
+<ion-view id="userMessagesView" hide-back-button="true"
+          view-title="{{toUser.username}}">
+    <!-- <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-back" ng-click="$root.history.goBack()"></button>
+    </ion-nav-buttons> -->
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-ios-arrow-back" ng-click="$root.history.goBack()"></button>
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+        
+  <div class="loader-center" ng-if="!doneLoading">
+      <div class="loader">
+        <i class="icon ion-loading-c"></i>
+      </div>
+  </div>
+
+    <ion-content has-bouncing="true" class="has-header has-footer" 
+        delegate-handle="userMessageScroll">
+      
+        <div ng-repeat="message in messages" class="message-wrapper">
+
+            <div ng-if="user._id !== message.userId">
+                
+              <img class="profile-pic left" 
+                    ng-src="{{toUser.pic}}" />
+
+                <div class="chat-bubble left">
+
+                    <div class="message" ng-bind-html="message.message | nl2br" autolinker>
+                    </div>
+
+                    <div class="message-detail">
+                        <span 
+                            class="bold">{{toUser.username}}</span>,
+                        <span am-time-ago="message.time"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div ng-if="user._id === message.userId">
+              
+                 <img class="profile-pic right" 
+                    ng-src="{{user.pic}}" />
+              
+                <div class="chat-bubble right">
+
+                    <div class="message" ng-bind-html="message.message | nl2br" autolinker>
+                    </div>
+
+                    <div class="message-detail">
+                        <span 
+                            class="bold">{{user.username}}</span>, 
+                        <span am-time-ago="message.time"></span>
+                    </div>
+
+                </div>
+              
+            </div>
+
+            <div class="cf"></div>
+
+        </div>
+    </ion-content>
+
+    <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+        <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+            <label class="item-input-wrapper">
+                <textarea ng-model="input.message" value="" placeholder="Send {{toUser.username}} a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
+            </label>
+            <div class="footer-btn-wrap">
+              <button class="button button-icon icon ion-android-send footer-btn" type="submit"
+                  ng-disabled="!input.message || input.message === ''">
+              </button>
+            </div>
+        </ion-footer-bar>
+    </form>
+    
+</ion-view>  

@@ -1,0 +1,153 @@
+<ion-side-menus enable-menu-with-back-views="true">
+
+  <ion-side-menu-content>
+    <ion-nav-bar class="app-bar bar-dark" align-title="center">
+      <ion-nav-back-button></ion-nav-back-button>
+      <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+    <div ng-if="!$root.app_suspended && history.currentStateName() != 'app.login' && history.currentStateName() != 'app.signup' && history.currentStateName() != 'app.forgotpassword'" style="bottom: 0px" class="hide-on-keyboard-open bar bar-subfooter auto-height footer-container"
+         ng-class="($root.loggedIn) ? 'quotelogged' : 'quotenotlogged'">
+            <!-- <i ng-style="$root.picData != null ? {'background-image':'url('+$root.picData+')'}: {'background-image':'url(img/person.jpg)'}"
+               class="menuheadericon ion-mypic"></i><i class="nav-icon footerName">{{ $root.name }} </i>
+
+            <div  ng-if="$root.vehiclePermit.vehicle && $root.vehiclePermit.permit" ng-click="$root.showVehiclePermit()" class="footerVehiclePermit">
+              <div class="row"><i class="button-icon icon ion-model-s"></i><span>{{$root.vehiclePermit.vehicle}}</span></div>
+              <div class="row"><i class="button-icon icon ion-card"></i><span>{{$root.vehiclePermit.permit}}</span></div>
+            </div>
+
+            <div ng-if="$root.myCustomerRating" ng-click="$root.updateRating()" class="footerRating"><span ng-if="history.currentStateName() == 'quoteform.form'">{{$root.myCustomerRating}}</span><span ng-if="history.currentStateName() != 'quoteform.form'">{{$root.myDriverRating}}</span><i
+                    class="button-icon icon ion-star energized"></i>
+            </div> -->
+            <div class="row driver-info">
+                <div style="margin-top:2px" class="col col-45">
+                    <!-- <img class="avatar" ng-src="{{$root.picData}}" /> <span>{{ $root.name }}</span> -->
+                    <div ng-if="$root.loggedIn && $root.myCustomerRating && $root.show_rating" ng-click="$root.updateRating()">
+                      <span ng-if="history.currentStateName() == 'app.quoteform'" class="rating-number">{{$root.myCustomerRating}}</span>
+                      <span ng-if="history.currentStateName() != 'app.quoteform'" class="rating-number">{{$root.myDriverRating}}</span>
+                      <div style="margin-top:13px" class="button-icon icon ion-star energized rating"></div>
+                    </div>
+                </div>
+                <div  ng-if="$root.loggedIn && $root.vehiclePermit.vehicle && $root.vehiclePermit.permit" ng-click="$root.showVehiclePermit()" class="footerVehiclePermit col col-30">
+                  <div ng-if="$root.show_vehicle" style="padding: 0;" class="row"><i class="button-icon icon ion-model-s"></i><span>{{$root.vehiclePermit.vehicle}}</span></div>
+                  <div ng-if="$root.show_permit" style="padding: 0;padding-top: 10px;" class="row"><i class="button-icon icon ion-card"></i><span>{{$root.vehiclePermit.permit}}</span></div>
+                </div>
+                <div style="margin-top: 10px;" class="col col-25 text-right">
+                    <!-- <div ng-if="$root.myCustomerRating" ng-click="$root.updateRating()">
+                      <span ng-if="history.currentStateName() == 'quoteform.form'" class="rating-number">{{$root.myCustomerRating}}</span>
+                      <span ng-if="history.currentStateName() != 'quoteform.form'" class="rating-number">{{$root.myDriverRating}}</span>
+                      <div style="margin-top:13px" class="button-icon icon ion-star energized rating"></div>
+                    </div> -->
+                    <ion-toggle ng-if="totalNonModeDrivers > 0 && history.currentStateName() == 'app.quoteform'" ion-toggle-custom-text class="col modetoggler button button-icon icon" ng-true-text="{{ 'BID_ON' | translate }}" ng-false-text="{{ 'BID_OFF' | translate }}" ng-true-value="'quote'" ng-false-value="'offer'" ng-model="$root.quoteQMode"></ion-toggle>
+                    <ion-toggle ng-if="history.currentStateName() == 'app.employee-index' && itemBooked > 0" ion-toggle-custom-text class="col modetoggler button button-icon icon" ng-true-text="{{ 'BID_ON' | translate }}" ng-false-text="{{ 'BID_OFF' | translate }}" ng-true-value="'quote'" ng-false-value="'offer'" ng-model="$root.partnersQMode"></ion-toggle>
+                    <ion-toggle ng-if="history.currentStateName() == 'app.employee-dispatcher'" ion-toggle-custom-text class="col modetoggler button button-icon icon" ng-true-text="{{ 'BID_ON' | translate }}" ng-false-text="{{ 'BID_OFF' | translate }}" ng-true-value="'quote'" ng-false-value="'offer'" ng-model="$root.dispatcherQMode"></ion-toggle>
+                </div>
+            </div>
+        <!--<button  on-tap="sendQuote()" class="button button-block icon-right ion-chevron-right button-balanced footerBtn quotemapbtn">{{ 'QUOTE' | translate }}</button>-->
+    </div>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left" ng-hide="hideLeft">
+    <ion-header-bar ng-class="{'nobookbtns': true}" ng-if="loggedIn" class="bar-stable bar-dark">
+        <div class="header-content">
+          <div class="row row-center">
+              <div class="col-2">
+                  <button class="app-btn-icon">
+                      <span class="pe-7s-angle-left"></span>
+                  </button>
+              </div>
+              <div class="col-5">
+                  <img ng-if="$root.picData" class="avatar" ng-src="{{$root.picData}}" />
+                  <img ng-if="!$root.picData" class="avatar" src="img/person.jpg" />
+              </div>
+              <div class="col-5">
+                  <h1 class="user-title">{{ name }}</h1>
+              </div>
+          </div>
+          <br />
+          <!-- <div class="row" ng-if="(itemBooked > 0 || itemNotBooked > 0) && !onQuotePage && canbookin" nav-clear menu-close>
+              <div ng-if="itemBooked > 0" class="col text-center">
+                  <a  nav-clear menu-close class="button book-button app-btn yellow" ng-click="bookAll('-2')">{{ 'BOOKOUT_ALL' | translate }}</a>
+              </div>
+              <div ng-if="itemNotBooked > 0" style="margin-left:3px;" class="col text-center">
+                  <a  nav-clear menu-close class="button book-button app-btn yellow" ng-click="bookAll('2')">{{ 'BOOKIN_ALL' | translate }}</a>
+              </div>
+          </div> -->
+      </div>
+    </ion-header-bar>
+    <!-- <ion-header-bar style="height:81px" class="bar-stable bar-dark item" ng-if="loggedIn" id="menuheader">
+      <i ng-style="$root.picData != null ? {'background-image':'url('+$root.picData+')'}: {'background-image':'url(img/person.jpg)'}" class="menuheadericon ion-mypic" class="icon nav-icon"></i><i style="margin-top:12px; font-size:27px" class="nav-icon">{{ name }}</i>
+    </ion-header-bar> -->
+    <ion-content ng-class="{'has-header' : $root.loggedIn, 'notlogged' : !$root.loggedIn, 'nobookin': !canbookin}">
+      <ion-list id="menulist" class="list-menu">
+        <ion-item ng-if="!loggedIn" nav-clear menu-close ui-sref="app.login()">
+          <i class="icon ion-log-out nav-icon"></i>
+          {{ 'LOG_IN' | translate }}
+        </ion-item>
+        <ion-item ng-if="!loggedIn" nav-clear menu-close ui-sref="app.signup">
+          <i class="icon ion-document-text nav-icon"></i>
+          {{ 'SIGNUP' | translate }}
+        </ion-item>
+        <ion-item ng-if="!loggedIn" nav-clear menu-close ui-sref="app.forgotpassword">
+          <i class="icon ion-ios-unlocked-outline nav-icon"></i>
+          {{ 'FORGOT' | translate }}
+        </ion-item>
+        <ion-item id="bookedbtns" ng-if="$root.allow_queue && (itemBooked > 0 || itemNotBooked > 0) && !onQuotePage && canbookin && showBookBtn" nav-clear menu-close>
+          <div class="">
+            <a ng-style="itemNotBooked > 0 ? {'width': '50%'} : {'width': '100%'}" nav-clear menu-close class="button book-button app-btn yellow" ng-if="itemBooked > 0" ng-click="bookAll('-2')">{{ 'BOOKOUT_ALL' | translate }}</a>
+            <a ng-style="itemBooked > 0 ? {'width': '50%'} : {'width': '100%'}" nav-clear menu-close class="button book-button app-btn yellow" ng-if="itemNotBooked > 0" ng-click="bookAll('2')">{{ 'BOOKIN_ALL' | translate }}</a>
+          </div>
+        </ion-item>
+        <ion-item nav-clear menu-close ui-sref="app.quoteform">
+          <i class="icon ion-email nav-icon"></i>
+            {{ 'QUOTE' | translate }}
+        </ion-item>
+        <ion-item ng-if="loggedIn && isNotCustomer" nav-clear menu-close ui-sref="app.employee-index">
+          <i class="icon ion-ios-people nav-icon"></i>
+          {{ 'AVAIL_SERVICES' | translate }}
+        </ion-item>
+        <ion-item ng-if="loggedIn" nav-clear menu-close ng-click="orders()">
+          <i class="icon ion-social-usd nav-icon"></i>
+            {{ 'ORDERS' | translate }}
+        </ion-item>
+        <ion-item ng-if="loggedIn" nav-clear menu-close ui-sref="app.messages">
+          <i class="icon ion-ios-list-outline nav-icon"></i>
+            {{ 'MESSAGES' | translate }}
+        </ion-item>
+        <!--<ion-item ng-if="loggedIn" nav-clear menu-close ui-sref="app.profile">
+          <i class="icon ion-person nav-icon"></i>
+            {{ 'MY_PROFILE' | translate }}
+        </ion-item>-->
+        <ion-item ng-if="loggedIn" 
+                  class="item-stable"
+                  ng-click="toggleGroup()"
+                  ng-class="{menuActive: isGroupShown()}">
+            <i class="icon ion-android-settings"></i>
+          &nbsp;
+          {{ 'MY_PROFILE' | translate }}
+            <i style="float:right;color:#82cde5" class="icon" ng-class="isGroupShown() ? 'ion-chevron-up' : 'ion-chevron-down'"></i>
+        </ion-item>
+        <ion-item ng-if="loggedIn" 
+                  class="item-accordion subNav"
+                  ng-repeat="item in groups"
+                  ng-show="isGroupShown(group)"
+                  nav-clear menu-close ui-sref="{{item.link}}">
+                  <i class="ion nav-icon" ng-class="item.icon"></i>
+          {{item.title}}
+        </ion-item>
+        <ion-item ng-if="loggedIn && !itemBooked" nav-clear menu-close ng-click="showLogOut()">
+          <i class="icon ion-log-out nav-icon"></i>
+          {{ 'LOGOUT' | translate }}
+        </ion-item>
+        <!--<ion-item ng-if="itemNotBooked == true" nav-clear menu-close ng-click="bookAll('in')">
+          Book In All
+        </ion-item>-->
+      </ion-list>
+    </ion-content>
+    <ion-footer-bar style="height:43px" class="nopadding" id="menufooter">
+      <p style="color: white; font-size: 24px; margin-left: 20px;">v1.0</p>
+    </ion-footer-bar>
+  </ion-side-menu>
+</ion-side-menus>

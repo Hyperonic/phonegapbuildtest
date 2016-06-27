@@ -1,0 +1,339 @@
+<ion-modal-view title="{{ 'MY_VEHICLE' | translate }}">
+<ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="vehicle.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+
+    <h1 class="title">{{ 'VEHICLE_INFO' | translate }}</h1>
+
+    <button ng-click="saveVehicle(vehicleForm)" class="button button-positive button-icon ion-checkmark"></button>
+  </ion-header-bar>
+  <ion-content class="signup-content text-center">
+    <form name="$parent.vehicleForm" novalidate="novalidate" autocomplete="off">
+        <!-- <div class="item signup-content" id="uploaddoc"><img ng-if="!insurance" ng-src="{{vehicleData.insurance}}" /><p ng-if="!insurance" class="white">{{'ADD_DOCUMENT_PHOTO' | translate}}<br>({{ 'UPLOAD_CLEAR' | translate }})</p>
+          <ion-scroll ng-if="insurance" direction="x" class="msgimages">
+                <img class="imageattached" ng-repeat="(type, src) in vehicleFormImages" ng-click="showLargeImage('vehicleFormImages', $index)" ng-src="{{src}}" />
+            </ion-scroll>
+          </div> -->
+
+          <div class="m10 mt30">
+            <div ng-click="picOption($event, 'insurance')" class="button button-small button-stable">
+              {{'INSURANCE_POLICY' | translate }}
+            </div>
+            <span ng-if="!insurance && !vehicleForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!insurance && vehicleForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan white">{{ insurance }}</span>
+          </div>
+          <div class="m10">
+            <div ng-click="picOption($event, 'inspection_expiry_date')" class="button button-small button-stable">
+              {{'INSPECTION_EXPIRY' | translate }}
+            </div>
+            <span ng-if="!inspection_expiry_date && !vehicleForm.$submitted" class="choosefilespan white">{{ 'NO_FILE' | translate }}</span>
+            <span class="form-error" ng-if="!inspection_expiry_date && vehicleForm.$submitted" class="choosefilespan">{{ 'PLEASE_ADD_PHOTO' | translate }}</span>
+            <span class="choosefilespan white">{{ inspection_expiry_date }}</span>
+          </div>
+          <h3 class="m10 white">{{ 'EXTRA_INFO' | translate }}</h3>
+      <div class="list list-inset app-form login-form">
+          
+
+        <label class="item item-input">
+              <i ng-if="vehicleData.vin && !vinFieldsFilled" class="fa fa-times"></i>
+            <input type="text"
+                   placeholder="{{ 'VIN' | translate }}" 
+                   name="vin"
+                   ng-model="vehicleData.vin"
+                   ng-click="vin.show()"
+                   required>
+          </label>
+
+          <div ng-if="vehicleForm.vin.$invalid" class="form-errors" ng-show="vehicleForm.vin.$error && vehicleForm.$submitted" ng-messages="vehicleForm.vin.$error">
+            <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          
+          <!-- <label ng-if="!validvin" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.mileage.$invalid  && vehicleForm.$submitted }">
+            <input type="tel"
+                   placeholder="{{ 'MILEAGE' | translate }}" 
+                   name="mileage"
+                   ng-model="vehicleData.mileage" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.mileage.$invalid" class="form-errors" 
+               ng-show="vehicleForm.mileage.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.mileage.$error"
+               ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-if="!validvin" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.make.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'MAKE' | translate }}" 
+                   name="make"
+                   ng-model="vehicleData.make"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.make.$invalid" class="form-errors" 
+               ng-show="vehicleForm.make.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.make.$error"
+               ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-if="!validvin" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.model.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'MODEL' | translate }}" 
+                   name="model"
+                   ng-model="vehicleData.model"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.model.$invalid" class="form-errors" 
+               ng-show="vehicleForm.model.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.model.$error"
+               ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-if="!validvin" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.year.$invalid  && vehicleForm.$submitted }">
+           <date-picker
+              config="{ minView: 'year', startView: 'year' }"
+              heading="{{ 'YEAR' | translate }}"
+              name="year"
+              ng-model="vehicleData.year"
+              callback="saveDateTime(selDate, field)"
+              required
+              renderbefore=""
+              is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="vehicleForm.year.$invalid" class="form-errors" 
+               ng-show="vehicleForm.year.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.year.$error"
+               ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-if="!validvin" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.type.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'TYPE' | translate }}" 
+                   name="type"
+                   ng-model="vehicleData.type"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.type.$invalid" class="form-errors" 
+               ng-show="vehicleForm.type.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.type.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+
+          <label class="item item-input">
+              <i class="fa"></i>
+            <input type="tel"
+                   placeholder="{{ 'SEATS' | translate }}" 
+                   name="seats"
+                   ng-model="vehicleData.seats" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.seats.$invalid" class="form-errors" 
+               ng-show="vehicleForm.seats.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.seats.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <!-- <label ng-if="!color" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.interior.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'COLOR_INTERIOR' | translate }}" 
+                   name="interior"
+                   ng-model="vehicleData.interior"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.interior.$invalid" class="form-errors" 
+               ng-show="vehicleForm.interior.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.interior.$error"
+               ng-messages-include="form-errors.html">
+          </div>
+
+          <label ng-if="!color" class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.exterior.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'COLOR_EXTERIOR' | translate }}" 
+                   name="exterior"
+                   ng-model="vehicleData.exterior"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.exterior.$invalid" class="form-errors" 
+               ng-show="vehicleForm.exterior.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.exterior.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <label class="item item-input">
+              <i class="fa"></i>
+            <input type="text"
+                   placeholder="{{ 'PLATE_NO' | translate }}" 
+                   name="plate"
+                   ng-model="vehicleData.plate"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.plate.$invalid" class="form-errors" 
+               ng-show="vehicleForm.plate.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.plate.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <label ng-if="!interior" class="item item-input">
+              <input type="text"
+                     placeholder="{{ 'COLOR_INTERIOR' | translate }}" 
+                     name="interior"
+                     ng-model="vehicleData.interior"
+                     ng-minlength="2" 
+                     required>
+            </label>
+            <div ng-if="vehicleForm.interior.$invalid" class="form-errors" 
+                 ng-show="vehicleForm.interior.$error && vehicleForm.$submitted"
+                 ng-messages="vehicleForm.interior.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label ng-if="!exterior" class="item item-input">
+              <input type="text"
+                     placeholder="{{ 'COLOR_EXTERIOR' | translate }}" 
+                     name="exterior"
+                     ng-model="vehicleData.exterior"
+                     ng-minlength="2" 
+                     required>
+            </label>
+            <div ng-if="vehicleForm.exterior.$invalid" class="form-errors" 
+                 ng-show="vehicleForm.exterior.$error && vehicleForm.$submitted"
+                 ng-messages="vehicleForm.exterior.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label ng-if="!validvin" class="item item-input">
+              <i class="fa"></i>
+              <input type="tel"
+                     placeholder="{{ 'MILEAGE' | translate }}" 
+                     name="mileage"
+                     ng-model="vehicleData.mileage" 
+                     required>
+            </label>
+            <div ng-if="vehicleForm.mileage.$invalid" class="form-errors" 
+                 ng-show="vehicleForm.mileage.$error && vehicleForm.$submitted"
+                 ng-messages="vehicleForm.mileage.$error">
+                 <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.insurance.$invalid  && vehicleForm.$submitted }">
+            <input type="text"
+                   placeholder="{{ 'INSURANCE_POLICY' | translate }}" 
+                   name="insurance"
+                   ng-model="vehicleData.insurance"
+                   ng-minlength="2" 
+                   required>
+          </label>
+          <div ng-if="vehicleForm.insurance.$invalid" class="form-errors" 
+               ng-show="vehicleForm.insurance.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.insurance.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <label class="item item-input">
+              <i class="fa"></i>
+            <date-picker
+                    style="width:100%"
+                    config="{ minView: 'day' }"
+                    heading="{{ 'PERMIT_EXPIRY' | translate }}"
+                    name="permit_expiry"
+                    ng-model="vehicleData.permit_expiry"
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="vehicleForm.permit_expiry.$invalid" class="form-errors" 
+               ng-show="vehicleForm.permit_expiry.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.permit_expiry.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <!-- <label class="item item-input" 
+                 ng-class="{ 'has-error-lr' : vehicleForm.inspection_expiry.$invalid  && vehicleForm.$submitted }">
+            <date-picker
+                    config="{ minView: 'day' }"
+                    heading="{{ 'INSPECTION_EXPIRY' | translate }}"
+                    name="inspection_expiry"
+                    ng-model="vehicleData.inspection_expiry"
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    defaultexpiry
+                    renderafter=""
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="vehicleForm.inspection_expiry.$invalid" class="form-errors" 
+               ng-show="vehicleForm.inspection_expiry.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.inspection_expiry.$error"
+               ng-messages-include="form-errors.html">
+          </div> -->
+
+          <label class="item item-input">
+              <i class="fa"></i>
+            <date-picker
+                    style="width:100%"
+                    config="{ minView: 'day' }"
+                    heading="{{ 'VEHICLE_EXPIRY' | translate }}"
+                    name="title_expiry"
+                    ng-model="vehicleData.title_expiry"
+                    callback="saveDateTime(selDate, field)"
+                    required
+                    defaultexpiry
+                    renderafter="12/30/2015"
+                    is-icon='false'>
+            </date-picker>
+          </label>
+          <div ng-if="vehicleForm.title_expiry.$invalid" class="form-errors" 
+               ng-show="vehicleForm.title_expiry.$error && vehicleForm.$submitted"
+               ng-messages="vehicleForm.title_expiry.$error">
+               <div ng-messages-include="form-errors.html"></div>
+          </div>
+
+          <label ng-hide="true" class="item item-input">
+            <input type="text" 
+                   name="insurance"
+                   ng-model="vehicleData.insurance"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+          <input ng-hide="true" type="file" id="file_insurance" ng-model="licenseimage" name="file" base-sixty-four-input onloadend="insuranceFileLoaded" maxsize="500" accept="image/jpeg">
+
+          <label ng-hide="true" class="item item-input">
+            <input type="text"
+                   name="inspection_expiry_date"
+                   ng-model="vehicleData.inspection_expiry_date"
+                   ng-minlength="2" 
+                   required>
+          </label>
+
+          <input ng-hide="true" type="file" id="file_inspection_expiry_date" ng-model="licenseimage" name="file" base-sixty-four-input onloadend="inspectionFileLoaded" maxsize="500" accept="image/jpeg">
+
+        </div>
+    </form>
+    <div class="row">
+        <div class="col">
+            <button on-tap="saveVehicle(vehicleForm)" class="register-btn button app-btn yellow">{{ 'SAVE' | translate }}</button>
+        </div>
+    </div>
+  </ion-content>
+    <!-- <button on-swipe-right="saveVehicle(vehicleForm)" style="margin-top: 70px;" class="tp quoteMapBtn hide-on-keyboard-open button button-block icon-right ion-chevron-right button-balanced">{{ 'SAVE' | translate }}</button> -->
+</ion-modal-view >
+

@@ -1,0 +1,18 @@
+<ng-form name="splitFareForm" >
+  <div class="item-input-inset card-custom">
+    <label style="margin: 0; margin-right:5px; width:100%" class="item item-input" ng-class="{ 'has-error-lr' : emailError}">
+    <input type="email" placeholder="{{ 'EMAIL' | translate }}" name="splitFare" ng-model="ngModel" ng-remote-validate="{{baseUrl}}user?"
+    ng-remote-throttle="800"
+    ng-remote-method="GET"
+    is-valid-email="true"
+    errorcallback="emailErrResult(emailError)"
+    validating="validating(valid)"
+    callback="emailResult(emailVal)">
+    <div ng-show="isValidating" class="splitfarespinner"><ion-spinner/></div>
+    </label>
+    <a class="small-btn remove" ng-click="removeEmailField()">{{ 'REMOVE' | translate }}</a>
+    <a ng-show="total==index+1 && showAddBtn && !isValidating" class="small-btn add-more" ng-click="addEmailField()">{{ 'ADD_MORE' | translate }}</a>
+  </div>
+      <div ng-if="splitFareForm.splitFare.$invalid" class="form-errors" ng-show="emailError  && ngModel.length != 0 && !isValidating" ng-messages="splitFareForm.splitFare.$error"> <div ng-messages-include="form-errors.html"></div>
+    </div>
+</ng-form>

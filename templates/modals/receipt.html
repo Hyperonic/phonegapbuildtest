@@ -1,0 +1,42 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-if="showBackBtn" ng-click="$root.receiptModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'RECEIPT' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content class="custom-radio has-icon" delegate-handle="scroll">
+    <div class="list">
+        <accordion obj="accordion" class="quoteofferdetail">
+          <p><strong>{{item.label}}</strong>: {{item.text}}</p>
+        </accordion>
+        <form name="$parent.receiptForm" id="receipt-msg">
+          <!-- <div class="list card">
+            <ion-radio ng-repeat="receiptmsg in receiptmsgs" ng-model="$parent.receiptmsg.default" ng-value="receiptmsg.val">{{receiptmsg.text | translate}}</ion-radio>
+            <label ng-hide="otherReceiptSelected" class="item item-input validated">
+              <textarea  msd-elastic rows="4" placeholder="{{ 'ENTER_MESSAGE' | translate }}" required name="msgrating" ng-model="receiptmsg.other"></textarea>
+            </label>
+            <div ng-if="receiptForm.msgrating.$invalid" class="form-errors" 
+                   ng-show="receiptForm.msgrating.$error && receiptForm.$submitted &&!otherSelected"
+                   ng-messages="receiptForm.msgrating.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+          </div> -->
+            <!-- <ion-checkbox ng-repeat="receiptmsg in receiptmsgs" class="item-checkbox-right quotechkbox" ng-model="$parent.receiptmsg.default">{{receiptmsg.text | translate}}</ion-checkbox> -->
+            <ion-checkbox ng-class="{'chked-item': receiptmsg.checked}" ng-repeat="receiptmsg in receiptmsgs" class="item-checkbox-right quotechkbox" ng-model="receiptmsg.checked" ng-change="receiptChecked($index, receiptmsg.checked)">{{receiptmsg.text | translate}}</ion-checkbox>
+            <label ng-hide="otherReceiptSelected" class="item quotechkbox item-checkbox item-checkbox-right validated">
+              <textarea  msd-elastic rows="4" placeholder="{{ 'ENTER_MESSAGE' | translate }}" required name="msgrating" ng-model="receiptmsg.other"></textarea>
+            </label>
+            <div ng-if="receiptForm.msgrating.$invalid" class="form-errors" 
+                   ng-show="receiptForm.msgrating.$error && receiptForm.$submitted &&!otherSelected"
+                   ng-messages="receiptForm.msgrating.$error">
+                   <div ng-messages-include="form-errors.html"></div>
+              </div>
+        </form>
+        <div class="row text-center">
+            <div class="col">
+                <button ng-disabled="receiptNotSelected" on-tap="receipt()" class="register-btn button app-btn yellow">{{ 'OK' |translate}}</button>
+            </div>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view >
+

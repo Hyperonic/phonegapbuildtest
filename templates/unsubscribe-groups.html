@@ -1,0 +1,37 @@
+<ion-view title="{{ 'UNSUBSCRIBE_GROUPS' | translate }}" hide-back-button="true">
+    <ion-header-bar class="bar bar-subheader item-input-inset search-bar">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input id="searchKey" type="search" placeholder="{{ 'SEARCH' | translate }}"
+                   ng-model="searchKey" autocorrect="off">
+            <!--<button class="button button-clear close-btn">X</button>-->
+        </label>
+        <span ng-click="clearSearch()" ng-class="(searchKey.length > 0) ? 'ion-ios-close' : 'ion-search'" class="button button-clear ft25"></span>
+    </ion-header-bar>
+
+    <ion-content style="top:92px">
+        <ion-list class="employeeList nopadding">
+            <ion-item
+                      class="item-text-wrap"
+                      id="employeeList"
+                      ng-repeat="employee in employees | filter:searchKey:startsWith"
+                      type="item-text-wrap">
+                    
+                    <ion-checkbox
+                                class="grouplist hidetoggle">
+                        <div class="item-avatar employee-content">
+                            <img ng-src="{{employee.pic }}" width="40" height="40"/>
+                            <h2>{{employee.firstName}} {{employee.lastName}}</h2>
+                            <p>{{employee.title}}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </ion-checkbox>
+            </ion-item>
+
+        </ion-list>
+        <div class="no-employee" ng-show="(employees.length == 0 || (employees|filter:searchKey:startsWith).length == 0)">
+            <h2>{{ 'NO_RECORDS' | translate }}</h2>
+        </div>
+
+    </ion-content>
+</ion-view>

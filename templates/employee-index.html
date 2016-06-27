@@ -1,0 +1,88 @@
+<ion-view title="{{ 'AVAIL_SERVICES' | translate }}" hide-back-button="true" class="driver-content">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button ng-show="filteredArray.length > 5" class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()"></button>
+        <button ng-if="$root.allow_add_group" side="right" class="button button-icon ion-ios-plus-outline" ui-sref="app.add-group"></button>
+    </ion-nav-buttons>
+    <!-- <ion-header-bar class="bar bar-subheader item-input-inset search-bar">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input id="searchKey" type="search" placeholder="{{ 'SEARCH' | translate }}"
+                   ng-model="searchKey" autocorrect="off">
+        </label>
+        <span ng-click="clearSearch()" ng-class="(searchKey.length > 0) ? 'ion-ios-close' : 'ion-search'" class="button button-clear ft25"></span>
+    </ion-header-bar> -->
+
+    <ion-content class="has-footer">
+        <!--<div class="mapWrap"  data-tap-disabled="true">
+            <map center="43.07493,-89.381388" zoom="15">
+              <marker ng-repeat=" pos in positions" position="{{pos.lat}},{{pos.lng}}"></marker>
+            </map>
+          </div>-->
+          <!-- <div class="list search-contain">
+              <label class="item item-input">
+                <input type="text" placeholder="{{ 'SEARCH' | translate }}"
+                   ng-model="searchKey" autocorrect="off">
+                <i ng-click="clearSearch()" class="placeholder-icon" ng-class="(searchKey.length > 0) ? 'ion-ios-close': 'pe-7s-search'" class="button button-clear ft25"></i>
+              </label>
+          </div> -->
+        <ion-list class="employeeList nopadding app-toggle">
+            <ion-item
+                      style="cursor:pointer"
+                      class="item-text-wrap"
+                      id="employeeList"
+                      ng-repeat="employee in filteredArray | filter:searchKey:startsWith"
+                      type="item-text-wrap"
+                      detect-gestures
+                      data-link="{{employee.dispatcherlink}}">
+
+                    <ion-toggle
+                                ion-toggle-text 
+                                ng-if="!employee.limit && !employee.iscustomer && ((employee.my_tags != '' && ((employee.apikeypublic == apikeypublic && employee.hasOwnProperty('can_bookin')) && (employee.can_bookin > 0 && employee.can_toggle == 1) || (employee.can_bookin > 0 && employee.can_toggle == 1))) || (employee.hasOwnProperty('can_bookin') && employee.user_id == user_id) && employee.hasOwnProperty('item_id'))"
+                                ng-model="employee.booked"
+                                ng-change="bookingChanged(employee, employee.booked)"
+                                ng-within-zone="{{employee.withinzone}}"
+                                ng-on-value="{{employee.QP}}"
+                                ng-off-value=""
+                                ng-disabled="isDisabled"
+                                data-booked="{{employee.booked}}"
+                                data-driver="{{employee.isDriver}}"
+                                data-id="{{employee.id}}"
+                                toggle-class="toggler"
+                                class="grouplist">
+                        <div class="item-avatar employee-content">
+                            <img ng-src="{{employee.pic }}" />
+                        	<p>{{employee.firstName}} {{employee.lastName}}</p>
+                        	<p>{{employee.title=="No Description" ? "": employee.title}}</p>
+                    	</div>
+                        <div class="clear"></div>
+                    </ion-toggle>
+                    
+                    <ion-toggle
+                                ion-toggle-text 
+                                ng-if="(employee.user_id != user_id || !employee.hasOwnProperty('item_id')) && (employee.limit || ((employee.apikeypublic == apikeypublic && employee.hasOwnProperty('can_bookin')) && (employee.can_bookin < 1 || employee.can_toggle == 0) || (employee.can_bookin < 1 || employee.can_toggle == 0)))"
+                                class="grouplist hidetoggle">
+                        <div class="item-avatar employee-content">
+                            <img ng-src="{{employee.pic }}" />
+                            <p>{{employee.firstName}} {{employee.lastName}}</p>
+                            <p>{{employee.title=="No Description" ? "": employee.title}}</p>
+                            <p ng-if="employee.limit" class="partners-limit">{{ 'LIMIT_REACHED' | translate}}</p>
+                        </div>
+                        <div class="clear"></div>
+                    </ion-toggle>
+
+
+               <ion-option-button class="editGroup" ng-if="isOwner(employee.user_id)" class="button-assertive" ui-sref="app.add-group({id:employee.id})">{{'EDIT' | translate}}</ion-option-button>
+               <ion-option-button class="button-assertive" ng-if="!employee.isOwner && !employee.iscustomer && ((employee.apikeypublic == apikeypublic && employee.hasOwnProperty('can_bookin')) && (employee.can_bookin > 0 && employee.can_toggle == 1) || (employee.can_bookin > 0 && employee.can_toggle == 1))" ng-click="removeGroup(employee)">{{'LEAVE' | translate}}</ion-option-button>
+               <ion-option-button ng-class="employee.mode=='quote' ? 'editGroup': 'button-assertive'" ng-if="!employee.iscustomer && ((employee.apikeypublic == apikeypublic && employee.hasOwnProperty('can_bookin')) && (employee.can_bookin > 0 && employee.can_toggle == 1) || (employee.can_bookin > 0 && employee.can_toggle == 1)) && employee.isDriver" ng-click="setBidMode(employee)">{{employee.mode == 'quote' ? 'Bid On' : 'Bid Off'}}</ion-option-button>
+            </ion-item>
+
+        </ion-list>
+        <div class="no-employee" ng-show="!$root.showingLoader && (filteredArray.length == 0 || (filteredArray|filter:searchKey:startsWith).length == 0)">
+            <h2 class="yellow">{{ 'NO_RECORDS' | translate }}</h2>
+        </div>
+
+    </ion-content>
+</ion-view>

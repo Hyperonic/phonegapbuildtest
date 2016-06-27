@@ -1,73 +1,144 @@
 <!DOCTYPE html>
-<html >
-<head >
-	<meta charset="utf-8" >
-	<meta name="viewport"
-	      content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" >
-	<title ></title >
+<html>
+<head>
+    <link rel='shortcut icon' href='img/favicon.ico' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: *; style-src 'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
+    <title>a2bAPP</title>
+    <script src="http://debug2.build.phonegap.com/target/target-script-min.js#954e92fe-e0b9-11e4-be35-f226c22ed271"></script>
+    <!--<script src="http://192.168.0.100:2222/target/target-script-min.js#anonymous"></script>
+    <script type="text/javascript">
+        function whackWebkitMatchesSelector() {
+            var oldMatches = Element.prototype.webkitMatchesSelector
+            
+            function newMatches(selector) {
+                try {
+                    return oldMatches.call(this, selector)
+                }
+                catch (err) {
+                    return false
+                }
+            }
 
-	<link href="lib/ionic/css/ionic.css"
-	      rel="stylesheet" >
-	<link href="css/style.css"
-	      rel="stylesheet" >
+            Element.prototype.webkitMatchesSelector = newMatches
+        }
 
-	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
-	<link href="css/ionic.app.css" rel="stylesheet">
-	-->
+        whackWebkitMatchesSelector();
+    </script>-->
 
-	<!-- ionic/angularjs js -->
-	<script src="lib/ionic/js/ionic.bundle.js" ></script >
 
-	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js" ></script >
+    <!-- compiled css output -->
+    <!-- build:appcss -->
+    <link href="css/style.min.css" rel="stylesheet">
+    <!-- endbuild -->
+    <!-- build:libcss -->
+    <link href="lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="lib/pe-icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
+    <link href="lib/ion-autocomplete/ion-autocomplete.min.css" rel="stylesheet">
+    <link href="lib/datetimepicker/datetimepicker.css" rel="stylesheet">
+    <link href="lib/ion-google-place/ion-google-place.css" rel="stylesheet">
+    <link href="lib/ionic-rating/ionic-rating.css" rel="stylesheet">
+    <link href="lib/angular-toastr/angular-toastr.min.css" rel="stylesheet">
+    <link href="lib/ionic-filter-bar/ionic.filter.bar.min.css" rel="stylesheet">
+    <link href="lib/angular-tek-progress-bar/progress-bar.css" rel="stylesheet">
+    <link href="lib/slidingTabs/tabSlideBox.css" rel="stylesheet">
+    <link href="lib/emojione/emojione.min.css" rel="stylesheet">
+    <link href="lib/tooltipster/tooltipster.min.css" rel="stylesheet">
+    <!-- endbuild -->
 
-	<!-- your app's js -->
-	<script src="js/app.js" ></script >
-</head >
-<body ng-app="soundboard" >
+    <!-- ionic/angularjs js -->
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <script src="lib/ocLazyLoad/ocLazyLoad.min.js"></script>
+    <!--<script src="https://maps.googleapis.com/maps/api/js?libraries=places,geometry&sensor=true"></script>
+    <!--<script src="lib/gmaps.js"></script>-->
 
-<ion-pane ng-controller="SoundBoardCtrl" >
-	<ion-header-bar class="bar-energized" >
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova-oauth.min.js"></script>
+    <script src="cordova.js"></script>
 
-		<div class="buttons" >
-			<button class="button button-icon ion-ios-minus-outline"
-			        ng-click="model.showDelete = !model.showDelete; model.showMove = false;" ></button >
-		</div >
+    <script>
+      angular.element(document).ready(function() {
+          if (window.cordova) {
+              /*$('head').append('<meta http-equiv="Content-Security-Policy" content="default-src \'self\' * gap://ready; style-src \'self\' \'unsafe-inline\' *; script-src \'self\' \'unsafe-inline\' \'unsafe-eval\' *">');*/
+              document.addEventListener('deviceready', function() {
+                  angular.bootstrap(document.body, ['starter']);
+              }, false);
+          } else {
+              angular.bootstrap(document.body, ['starter']);
+          }
+      });
 
-		<h1 class="title" >Soundboard</h1 >
+    </script>
+</head>
 
-		<div class="buttons" >
-			<button class="button"
-			        ng-click="model.showMove = !model.showMove; model.showDelete = false;" >
-				Move
-			</button >
-		</div >
+<body class="app" ng-strict-di>
+<ion-nav-view></ion-nav-view>
 
-	</ion-header-bar >
-	<ion-content >
+    <!-- build:js lib.js -->
+    <script src="lib/sliding-marker/jquery.easing.1.3.js"></script>
+    <script src="lib/firebase/firebase.js"></script>
+    <script src="lib/firebase/angularfire.min.js"></script>
+    <script src="lib/ion-google-place/ion-google-place.js"></script>
+    <script src="lib/moment.min.js"></script>
+    <script src="lib/moment/moment-timezone-with-data.min.js"></script>
+    <script src="lib/moment/moment-range.min.js"></script>
+    <script src="lib/datetimepicker/datetimepicker.js"></script>
+    <script src="lib/ionic-rating/ionic-rating.min.js"></script>
+    <script src="lib/ngstorage/ngStorage.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/angular-moment/angular-moment.min.js"></script>
+    <script src="lib/angular-touch/angular-touch.min.js"></script>
+    <script src='lib/ui-utils.min.js'></script>
+    <script src="lib/ui-map.js"></script>
+    <script src="lib/underscore/underscore-min.js"></script>
+    <script src="lib/ngRemoteValidate.js"></script>
+    <script src="lib/angular-translate/angular-translate.min.js"></script>
+    <script src="lib/angular-translate/angular-translate-loader-static-files.min.js"></script>
+    <script src="lib/angular-translate/angular-cookies.min.js"></script>
+    <script src="lib/angular-translate/angular-translate-storage-cookie.min.js"></script>
+    <script src="lib/angular-translate/angular-translate-storage-local.min.js"></script>
+    <script src="lib/angular-toastr/angular-toastr.tpls.min.js"></script>
+    <script src="lib/countdown/humanize-duration.js"></script>
+    <script src="lib/countdown/angular-timer.min.js"></script>
+    <script src="lib/validate.js"></script>
+    <script src="lib/ion-autocomplete/ion-autocomplete.min.js"></script>
+    <script src="lib/elastic.js"></script>
+    <script src="lib/ionic-image-lazy-load.js"></script>
+    <script src="lib/angular-base64/angular-base64-upload.min.js"></script>
+    <script src="lib/ionic-filter-bar/ionic.filter.bar.min.js"></script>
+    <script src="lib/angular-tek-progress-bar/tek.progress-bar.min.js"></script>
+    <script src="lib/slidingTabs/tabSlideBox.js"></script>
+    <script src="lib/emojione/emojione.min.js"></script>
+    <script src="lib/tooltipster/jquery.tooltipster.min.js"></script>
+    <script src="lib/sha1.js"></script>
+    <script src="lib/satellizer.min.js"></script>
+    <script src="lib/social-share/angular-socialshare.min.js"></script>
+    <!-- <script src="lib/oauth.min.js"></script> -->
+    <!-- endbuild -->
 
-		<ion-list show-delete="model.showDelete"
-		          show-reorder="model.showMove" >
-			<ion-item class="item-avatar item-icon-right item-remove-animate"
-			          ng-repeat="sound in model.sounds"
-			          ng-click="play(sound)" >
-				<img ng-src="{{sound.image}}"
-				     alt="" />
-				<h2 >{{ sound.title }}</h2 >
 
-				<p >{{ sound.desc }}</p >
-				<i class="icon ion-volume-high" ></i >
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('pk_test_iW16uSc6O9edLEupfz6HeY6x');
 
-				<ion-delete-button ng-click="deleteSound($index)"
-				                   class="ion-minus-circled" ></ion-delete-button >
+    </script>
 
-				<ion-reorder-button class="ion-navicon"
-				                    on-reorder="moveSound(sound, $fromIndex, $toIndex)" ></ion-reorder-button >
-
-			</ion-item >
-		</ion-list >
-
-	</ion-content >
-</ion-pane >
-</body >
-</html >
+        <!-- build:js templates.js -->
+    <script src="js/templates.js"></script>
+    <!-- endbuild -->
+    <!-- build:js app.js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
+    <!-- endbuild -->
+    
+<!-- <div class="loading-container"><div class="loading"><p>Please wait...</p></div></div> -->
+<audio id="ringtone" no-controls>
+    <source src="sound/ring.mp3" type="audio/mp3">
+</audio>
+</body>
+</html>

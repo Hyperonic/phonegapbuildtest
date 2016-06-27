@@ -1,0 +1,112 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="showCardForm(false)" ng-show="orderBackBtn" class="button button-positive button-icon ion-ios-arrow-back">{{ 'BACK' | translate }}</button>
+    <button ng-if="$root.rates[0].mode == 'quote'" ng-click="cancel_order()" ng-hide="cardForm" class="button button-positive button-icon ion-ios-arrow-back">{{ 'BACK' | translate }}</button>
+    <h1 style="min-width: 60px;" class="title">{{ 'ORDER' | translate }}</h1>
+    <button ng-if="rates[0].mode == 'offer'" class="button button-icon ion-more" ng-click="popoverPrice.show($event)"></button>
+  </ion-header-bar>
+  <!-- <ion-header-bar class="bar-subheader bar-danger">
+    <div><p><span class="expirytxt">{{ 'QUOTE_EXPIRES_IN' | translate }}</span><timer interval="1000" countdown=innerCountDown ng-if="showInnerCountDown" finish-callback="countDownEnded()">{{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer></p></div>
+  </ion-header-bar> -->
+  <div class="custom-radio has-icon countdown-subheader">
+        <countdown ng-if="showInnerCountDown" countdown="$root.innerCountDown" callback="$root.countDownEnded()" max="$root.quoteExpiry"></countdown>
+    </div>
+  <ion-content id="payment-page" class="custom-radio has-icon has-countdown">
+    <div class="item-content">
+        <div ng-hide="cardForm" class="item-content">
+          <accordion obj="accordion"  class="quoteofferdetail">
+            <p><strong>{{item.label}}</strong>: {{item.text}}</p>
+          </accordion>
+          <div class="paymentheaders">
+            <h5 class="col col-33 center">{{ 'PRICE' | translate }}</h5>
+            <h5 class="col col-33 center">{{ 'TIP' | translate }}</h5>
+            <h5 class="col col-33 center">{{ 'TOTAL_PRICE' | translate }}</h5>
+          </div>
+          <div class="row paymentrow">
+            <h5 class="col col-25 center mt20">${{tripSummary.price}}</h5>
+            <div class="item range col col-50" style="border:none;white-space:nowrap !important;">
+              <input style="display:inline;width:90%" type="range" name="tip" min="0" max="100" value="0" ng-model="range.tip" ng-change="tipCalculate(range.tip)">
+              <span id="tipVal">{{range.tip}}%</span>
+            </div>
+            <h5 class="col col-25 center mt20">${{priceWithTip}}</h5>
+          </div>
+          <div style="display:block" class="row">
+            <!-- <h3 class="center mt30">{{ 'PAYMENT_METHOD' | translate }}</h3> -->
+            <div style="width: auto; margin-bottom: 20px;" class="list list-inset paymentlist">
+              <div class="item listheaders">
+                <span>{{ 'PAYMENT_METHOD' | translate }}</span>
+              </div>
+              <ion-radio ng-click="showCardForm(true)" ng-model="paymentChoice.choice" ng-value="'card'"><i class="icon mr5 ion-card"></i><span class="boldFont">{{ 'CREDIT_CARD' | translate }}</span><span class="italicFont" ng-if="creditCards.length > 0"> ({{selectedCard.brand}} {{ 'CARD' | translate }}****{{selectedCard.last4}})</span></ion-radio>
+              <ion-radio ng-click="cashSelected()" ng-model="paymentChoice.choice" class="boldFont" ng-value="'cash'"><i class="icon mr5 ion-cash"></i>{{ 'CASH' | translate }}</ion-radio>
+            </div>
+          </div>
+        </div>
+        <form ng-show="cardForm" name="$parent.newCCardForm" novalidate="novalidate" autocomplete="off" id="payment-form">
+            <div ng-show="newCard" class="">
+                  <label class="item item-input" ng-class="{ 'has-error-lr' : newCCardForm.cardname.$invalid  && newCCardForm.$submitted }">
+                    <input placeholder="{{ 'NAME_CARD' | translate }}" required type="text" name="cardname" size="20" ng-model="creditcard.name" data-stripe="name"/>
+                  </label>
+                  <div ng-if="newCCardForm.cardname.$invalid" class="form-errors" ng-show="newCCardForm.cardname.$error && newCCardForm.$submitted" ng-messages="newCCardForm.cardname.$error">
+                    <div ng-messages-include="form-errors.html"></div>
+                  </div>
+
+                  <label class="item item-input" ng-class="{ 'has-error-lr' : newCCardForm.cardnum.$invalid  && newCCardForm.$submitted }">
+                    <input placeholder="{{ 'CARD_NUM' | translate }}" required type="number" name="cardnum" size="20" ng-model="creditcard.number" data-stripe="number"/>
+                  </label>
+                  <div ng-if="newCCardForm.cardnum.$invalid" class="form-errors" ng-show="newCCardForm.cardnum.$error && newCCardForm.$submitted" ng-messages="newCCardForm.cardnum.$error">
+                    <div ng-messages-include="form-errors.html"></div>
+                  </div>
+
+                  <label class="item item-input" ng-class="{ 'has-error-lr' : newCCardForm.cvc.$invalid  && newCCardForm.$submitted }">
+                    <input placeholder="{{ 'CVC' | translate }}" required type="number" name="cvc" size="4" ng-model="creditcard.cvc" data-stripe="cvc"/>
+                  </label>
+                  <div ng-if="newCCardForm.cvc.$invalid" class="form-errors" ng-show="newCCardForm.cvc.$error && newCCardForm.$submitted" ng-messages="newCCardForm.cvc.$error">
+                    <div ng-messages-include="form-errors.html"></div>
+                  </div>
+
+                  <label class="item item-input" ng-class="{ 'has-error-lr' : newCCardForm.cardexpiry.$invalid  && newCCardForm.$submitted }">
+                    <date-picker
+                            config="{ minView: 'month', startView: 'month' }"
+                            heading="{{ 'CARD_EXPIRY' | translate }}"
+                            name="cardexpiry"
+                            ng-model='creditcard.expiry'
+                            callback="saveDateTime(selDate)"
+                            required
+                            renderafter
+                            is-icon='false'>
+                    </date-picker>
+                  </label>
+                  <div ng-if="newCCardForm.cardexpiry.$invalid" class="form-errors" ng-show="newCCardForm.cardexpiry.$error && newCCardForm.$submitted" ng-messages="newCCardForm.cardexpiry.$error">
+                    <div ng-messages-include="form-errors.html"></div>
+                  </div>
+              </div>
+            <div ng-if="haveCreditCard && !newCard">
+                <!--<label class="item item-icon-right">
+                  <select style="opacity:0; width:100%; position:absolute; z-index=100" ng-model="selectedCard.card" ng-change="cardSelected()" ng-options="card.description for card in creditCards">
+                    <option value="-1">Add New Card</option>
+                  </select>
+                  <span class="input-label">Input Label:</span>
+                    <span class="item-note">Your answer was {{ question.responses[0] }}</span>
+                  <i class="icon ion-ios7-arrow-down"></i>
+                </label>-->
+                <div class="list">
+                  <ion-radio ng-repeat="card in creditCards | filter:{token: '!null'} | limitTo: 3  as filteredCards" ng-click="cardSelected(card)" ng-value="card.token" ng-model="selectedCard.token">{{card.brand}} {{ 'CARD' | translate }}****{{card.last4}} {{ 'EXPIRES' | translate }} {{card.exp_month}}/{{card.exp_year}}</ion-radio>
+                  <ion-radio ng-click="showNewCardForm()">{{ 'NEW_CARD' | translate }}</ion-radio>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-hide="newCardForm" class="row text-center">
+        <div class="col">
+            <button on-tap="charge()" class="register-btn button app-btn yellow">{{ 'PAYMENT' |translate}}</button>
+        </div>
+    </div>
+
+    <div ng-show="newCardForm" class="row text-center">
+        <div class="col">
+            <button on-tap="newCardDone(newCCardForm)" class="register-btn button app-btn yellow">{{ 'DONE' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view >
+

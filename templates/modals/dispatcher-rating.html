@@ -1,0 +1,27 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">    
+    <button ng-if="showBackBtn" ng-click="ratingModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'RATING' | translate }}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <div>
+    <ion-checkbox
+              ng-repeat="chkbox in ratingChkboxes"
+              ng-disabled="chkbox.calculated"
+              ng-model="chkbox.isChecked"
+              ng-change="setRating()"
+              ng-checked="chkbox.isChecked"
+              class="item-checkbox-right"
+              toggle-class="toggle-assertive">
+      {{chkbox.text}}</ion-checkbox>
+    <div class="item">
+        <rating style="text-align: center;" id="ratingcolor" ng-model="rate" max="max"></rating>
+      </div>
+    </div>
+    <div class="row text-center">
+        <div class="col">
+            <button on-tap="sendRating()" class="register-btn button app-btn yellow">{{ 'RATE' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</ion-modal-view>

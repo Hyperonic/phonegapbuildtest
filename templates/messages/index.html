@@ -1,0 +1,35 @@
+<ion-view title="{{ 'MESSAGES' | translate }}" hide-back-button="false" class="ordersearch-content">
+    <!-- <ion-header-bar ng-if="messages.length > 0" class="bar bar-subheader item-input-inset search-bar">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios7-search placeholder-icon"></i>
+            <input type="search" placeholder="{{ 'MESSAGE_SEARCH' | translate }}"
+                   ng-model="search.value" autocorrect="off">
+        </label>
+        <span ng-click="clearSearch()" ng-class="(searchKey.length > 0) ? 'ion-ios-close' : 'ion-search'" class="button button-clear ft25"></span>
+    </ion-header-bar> -->
+    <ion-nav-buttons side="right">
+        <button ng-show="sizeOf(messages) > 5" class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()"></button>
+    </ion-nav-buttons>
+    <ion-content class="has-footer custom-radio">
+        <!-- <ion-list class="list-custom">
+            <ion-item
+                      class="order-item confirm-panel item-text-wrap item"
+                      id="messages-content"
+                      ng-repeat="message in messages | filter:search.value:startsWith | filter:filterFunc | orderBy:sortFunc:reverseSort"
+                      ng-click="messageDetail(message.from, message.from_name)">
+                      <h2>{{message.from_name}}</h2>
+            </ion-item>
+
+        </ion-list> -->
+
+        <ion-radio class="item-result message-item" ng-repeat="(apikey, message) in messages" ng-click="messageDetail(apikey, message.from)">
+              <div class="title">{{message.from}}</div>
+              <span class="state" am-time-ago="message.time"></span>
+          </ion-radio>
+
+        <div class="no-employee" ng-show="sizeOf(messages) == 0">
+            <h2>{{ 'NO_RECORDS' | translate }}</h2>
+        </div>
+
+    </ion-content>
+</ion-view>

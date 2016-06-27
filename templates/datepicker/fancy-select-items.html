@@ -1,0 +1,16 @@
+<div class="view-container modal">
+  <header class="bar bar-header bar-positive bar-custom"> 
+    <h1 class="title">{{heading}}</h1>
+    <div class="button button-clear" ng-click="hideDatePicker()">
+      <span class="icon ion-close ion-close-custom"></span>
+    </div>
+  </header>
+  <ion-content class="has-header" padding="true">
+    <datetimepicker data-on-set-time="onTimeSet(newDate, oldDate)" data-datetimepicker-config="{{config}}" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)" ng-required="{{required}}" class="dtPicker" ng-model="tmp.newDate"></datetimepicker>
+    <div ng-if="newDate || tmp.newDate" class="row text-center">
+        <div class="col">
+            <button on-tap="save()" class="register-btn button app-btn yellow ng-binding disable-user-behavior">{{ 'SET' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+</div>

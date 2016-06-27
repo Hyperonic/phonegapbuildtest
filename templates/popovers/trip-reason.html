@@ -1,0 +1,13 @@
+<ion-popover-view class="reason-popover">
+	<ion-header-bar>
+      <h1 class="title">{{ 'REASON' | translate }}</h1>
+    </ion-header-bar>
+	<ion-content>
+	    <ion-list>
+		  <ion-item ng-click="reasonPopoverRes(reason.text)" ng-repeat="reason in tripDeclineReasons">
+		    {{reason.text}}
+		  </ion-item>
+		</ion-list>
+	</ion-content>
+</ion-popover-view>
+

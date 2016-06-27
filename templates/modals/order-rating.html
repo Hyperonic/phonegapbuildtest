@@ -1,0 +1,43 @@
+<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-positive bar-custom">
+    <button ng-click="$root.ratingModal.hide()" class="button button-positive button-icon ion-ios-arrow-back"></button>
+    <h1 class="title">{{ 'RATE' | translate }} {{name}}</h1>
+  </ion-header-bar>
+  <ion-content class="grey">
+
+      <ion-list class="employeeList nopadding app-toggle">
+    <!-- <div class="list">
+    <div class="list card"> -->
+    <!-- <ion-checkbox
+              ng-repeat="chkbox in ratingChkboxes"
+              ng-disabled="chkbox.calculated"
+              ng-model="chkbox.isChecked"
+              ng-change="setRating()"
+              ng-checked="chkbox.isChecked"
+              class="item-checkbox-right rating"
+              toggle-class="toggle-assertive">
+      <i ng-if="chkbox.class != ''" class="ratingicons mr5 icon {{chkbox.class}}"></i>{{chkbox.text}}</ion-checkbox> -->
+            <!-- <ion-checkbox ng-repeat="receiptmsg in receiptmsgs" class="item-checkbox-right quotechkbox" ng-model="$parent.receiptmsg.default">{{receiptmsg.text | translate}}</ion-checkbox> -->
+            <ion-checkbox ng-repeat="chkbox in ratingChkboxes"
+              ng-disabled="chkbox.calculated"
+              ng-model="chkbox.isChecked"
+              ng-change="setRating()"
+              ng-checked="chkbox.isChecked"
+              toggle-class="toggle-assertive" class="item-checkbox-right quotechkbox" ><i ng-if="chkbox.class != ''" class="ratingicons mr5 icon {{chkbox.class}}"></i>{{chkbox.text}}</ion-checkbox>
+    <div style="border: none;" class="item ratingdiv">
+        <!--<angular-ratings notify-url="notify.json" notify-id="vehicle" ng-model="trip.rating.vehicle"></angular-ratings>-->
+        <rating style="text-align: center;" id="ratingcolor" ng-model="rate" max="max"></rating>
+      </div>
+    <!-- </div>
+    </div> -->
+    </ion-list>
+    <div style="margin-top:20px" class="row text-center">
+        <div class="col">
+            <button on-tap="sendRating()" class="register-btn button app-btn yellow">{{ 'RATE' |translate}}</button>
+        </div>
+    </div>
+  </ion-content>
+  <!-- <ion-footer-bar ng-disable="disableArrive" ng-if="!detail.isDriver" class="nopadding">
+      <button on-swipe-right="sendRating()" class="footerBtn button button-block icon-right ion-chevron-right button-balanced">{{'RATE' | translate}}</button>
+  </ion-footer-bar> -->
+</ion-modal-view>

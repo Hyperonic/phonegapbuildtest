@@ -1,0 +1,32 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-positive bar-custom">
+        <div class="buttons">
+        </div>
+        <h1 class="title">{{ 'SPECIAL_INSTRUCTIONS' | translate }}</h1>
+        <button ng-click="saveInstructions()"
+                class="button button-positive button-icon ion-checkmark"></button>
+    </ion-header-bar>
+    <ion-header-bar class="bar-subheader bar-danger">
+      <p>{{ 'SELECT_NOTES' | translate }}</p>
+  </ion-header-bar>
+    <ion-content class="custom-radio has-icon has-subheader">
+                <ion-radio 
+                        ng-repeat="item in notes"
+                        ng-checked="item.checked"
+                        ng-click='noteChecked(item)'
+                        class="item item-radio item-text-wrap"
+                        ng-class="{'checkedFancyItem': item.checked==true}">
+                       {{item.text}}
+                </ion-radio>
+                <label ng-hide="otherNoteSelected" class="custom-text item">
+                    <textarea rows="4" placeholder="{{ 'ENTER_NOTES' | translate }}" required
+                              name="othernote" ng-model="quotenote.other" msd-elastic></textarea>
+                </label>
+        <div class="row text-center">
+            <div class="col">
+                <button on-tap="saveInstructions()" class="register-btn button app-btn yellow">{{ 'SET' |translate}}</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>
+

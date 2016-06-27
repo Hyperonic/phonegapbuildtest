@@ -1,0 +1,77 @@
+<ion-view title="{{ 'SIGNUP' | translate }}">
+  <ion-content class="signup-content text-center">
+      <div class="row logo">
+          <div class="col">
+              <img src="img/logo.png" alt="Logo" />
+          </div>
+      </div>
+      <form name="signupForm" novalidate="" ng-submit="doSignUp(signupForm)">
+        <div class="list list-inset app-form login-form">
+            <label class="item item-input">
+              <i class="fa"></i>
+              <input type="text" name="name" ng-model="signUpData.name" required placeholder="{{ 'NAME' | translate }}">
+            </label>
+              <div ng-if="signupForm.name.$invalid" class="form-errors" ng-show="signupForm.name.$error && signupForm.$submitted" ng-messages="signupForm.name.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input">
+              <input type="email" name="email" ng-model="signUpData.email" required placeholder="{{ 'EMAIL' | translate }}">
+            </label>
+            <div ng-if="signupForm.email.$invalid" class="form-errors" ng-show="signupForm.email.$error && signupForm.$submitted" ng-messages="signupForm.email.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input item-margin item-password">
+              <i class="fa"></i>
+              <input type="password" name="password" ng-minlength="5" ng-model="signUpData.password" required placeholder="{{ 'PASSWORD' | translate }}">
+            </label>
+            <div ng-if="signupForm.password.$invalid" class="form-errors" ng-show="signupForm.password.$error && signupForm.$submitted" ng-messages="signupForm.password.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input item-margin item-password">
+              <i class="fa"></i>
+              <input required ng-model="signUpData.confirmPassword" type="password" name="confirmpwd" ng-minlength="5" compare-to="signUpData.password" placeholder="{{ 'CONFIRM_PASSWORD' | translate }}">
+            </label>
+            <div ng-if="signupForm.confirmpwd.$invalid" ng-messages="signupForm.confirmpwd.$error" 
+            class="form-errors" ng-show="signupForm.confirmpwd.$error && signupForm.$submitted">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+            <label class="item item-input item-margin item-password">
+              <i class="fa"></i>
+              <input type="password" name="phone" ng-model="signUpData.phone" required placeholder="{{ 'CELL_NUM' | translate }}">
+            </label>
+            <div ng-if="signupForm.phone.$invalid" class="form-errors" ng-show="signupForm.phone.$error && signupForm.$submitted" ng-messages="signupForm.phone.$error">
+              <div ng-messages-include="form-errors.html"></div>
+            </div>
+
+          <label class="item item-input item-margin">
+            <span class="input-label"></span>
+            <i class="fa"></i>
+            <input type="text" name="referred" ng-model="signUpData.referred" placeholder="{{ 'REFERRED_BY' | translate }}">
+          </label>
+        </div>
+        <div class="row item-checkbox">
+            <div class="col">
+                <label class="item item-checkbox">
+                  <div class="checkbox checkbox-input-hidden checkbox-circle">
+                  <input type="checkbox" name="disclaimer" ng-model="signUpData.disclaimer" ng-true-value="1" check-required><i class="checkbox-icon"></i></div>
+                  <div class="item-content item-text-wrap">{{'TERMS' | translate}}</div>
+                </label>
+            </div>
+        </div>
+        <div ng-if="signupForm.disclaimer.$invalid" ng-messages="signupForm.disclaimer.$error" 
+                class="form-errors" ng-show="signupForm.disclaimer.$error && signupForm.$submitted">
+            <div ng-messages-include="form-errors.html"></div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button class="register-btn button app-btn yellow">{{ 'CREATE_ACCOUNT' | translate }}</button>
+            </div>
+        </div>
+      </form>
+    </ion-content>
+</ion-view >
+
