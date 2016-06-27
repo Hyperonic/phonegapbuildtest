@@ -13,7 +13,7 @@
 	"allow_offer": "yes",
 	"allow_price_offer": "yes",
 	"biddable": "yes",
-	"rquire_uppload": "no",
+	"rquire_uppload": "yes",
 	"who_can_offer_price": "",
 	"limit_area_coverage": 25,
 	"zone_maximum_driver_limit": 20,

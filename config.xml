@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.a2bapp" version="0.0.14" xmlns:gap="http://phonegap.com/ns/1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.a2bapp" version="0.0.15" xmlns:gap="http://phonegap.com/ns/1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>A2B</name>
   <description>&#xD;&#xD;
         A sample Apache Cordova application that responds to the deviceready event.&#xD;&#xD;
@@ -11,7 +11,7 @@
   <access origin="*" subdomains="true" />
   <allow-navigation href="*" />
   <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
-  <preference name="loadUrlTimeoutValue" value="60000"/>
+  <preference name="LoadUrlTimeoutValue" value="60000"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="AutoHideSplashScreen" value="false"/>
   <preference name="webviewbounce" value="false"/>
@@ -124,6 +124,10 @@
   <plugin name="cordova-plugin-request-location-accuracy" />
   <plugin name="cordova-plugin-contacts" />
   <plugin name="cordova-plugin-x-socialsharing" />
+  <plugin source="git" spec="https://github.com/mapsplugin/cordova-plugin-googlemaps" >
+    <param name="API_KEY_FOR_ANDROID" value="AIzaSyCe2aTCnx4LjCCxLPDPD0c2l_UNiv4gBig" />
+    <param name="API_KEY_FOR_IOS" value="AIzaSyAXpnBjorZYS3VFDlJDjE743d7ObHwXIbE" />
+  </plugin>
   <!-- <plugin name="de.appplant.cordova.plugin.local-notification" source="pgb" /> -->
   <!-- <plugin name="cordova-plugin-crosswalk-webview-pgb-adapt" version="1.4.0-dev-5"/> -->
   <!-- <plugin name='org.crosswalk.engine' version='1.3.0' source='pgb' /> -->
